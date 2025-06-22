@@ -1,0 +1,135 @@
+<form [formGroup]="registerForm" (ngSubmit)="register()">
+	<h2 class="title">Regisztráció</h2>
+
+	<div class="form-group">
+		<input type="text" placeholder="" formControlName="name">
+		<label>Felhasználónév</label>
+	</div>
+
+	@if (name.invalid && name.touched) {
+		@if ( name.errors?.['required'] ) {
+			<div class="error">
+				<span class="material-icons">cancel</span>
+				<span>A felhasználó nevet meg kell adni!</span>	
+			</div>
+		}
+		@if ( name.hasError("minlength") ) {
+			<div class="error">
+				<span class="material-icons">cancel</span>
+				<span>A felhasználó név minimum 3 karakter kell, hogy legyen!</span>
+			</div>
+		}
+		@if ( name.hasError("maxlength") ) {
+			<div class="error">
+				<span class="material-icons">cancel</span>
+				<span>A felhasználó név maximum 32 karakterből állhat!</span>
+			</div>
+		}
+	}
+
+	<div class="form-group">
+		<input type="email" placeholder="" formControlName="email">
+		<label>Email cím</label>
+	</div>
+	@if (email.invalid && email.touched) {
+		@if (email.errors?.['required']) {
+			<div class="error">
+				<span class="material-icons">cancel</span>
+				<span>Az email címet meg kell adni!</span>
+			</div>
+		}
+		@if (email.hasError("email") ) {
+			<div class="error">	
+				<span class="material-icons">cancel</span>
+				<span>Helytelen email formátum!</span>
+			</div>
+		}
+	}
+
+	<div class="form-group icon-input">
+		<input [ngClass]="password.valid ? 'valid' : password.touched ? 'invalid' : ''" [type]="inputType()" placeholder="" formControlName="password">
+		<label>Jelszó</label>
+		@if (!passwordVisible()) {
+			<button (click)="revealPassword()" type="button">
+				<i class="material-icons icon">visibility_off</i>
+				<span class="visually-hidden">Jelszó felfedése</span>
+			</button>              
+		} @else {
+			<button (click)="revealPassword()" type="button">
+				<i class="material-icons icon">visibility</i>
+				<span class="visually-hidden">Jelszó elrejtése</span>
+			</button>
+		}
+	</div>
+	@if (password.invalid && password.touched) {
+		@if (password.errors?.['required']) {
+			<div class="error">
+				<span class="material-icons">cancel</span>
+				<span>Jelszót kötelező megadni!</span>
+			</div>
+		}
+		@if ( password.hasError("minlength") ) {
+			<div class="error">
+				<span class="material-icons">cancel</span>
+				<span>A jelszó minimum 6 karakter kell hogy legyen!</span>
+			</div>
+		}
+		@if ( password.hasError("maxlength") ) {
+			<div class="error">
+				<span class="material-icons">cancel</span>
+				<span>A jelszó maximum 32 karakterből állhat!</span>
+			</div>
+		}
+		@if ( password.hasError("hasOnlyLowercaseLetters") ) {
+			<div class="error">
+				<span class="material-icons">cancel</span>
+				<span>Legalább 1 nagybetűt meg kell adni!</span>
+			</div>
+		}
+	}
+
+	<div class="form-group">
+		<input type="password" placeholder="" formControlName="password2">
+		<label>Jelszó újra</label>
+	</div>
+	@if (password2.invalid && password2.touched) {
+		@if (password2.errors?.['required']) {
+			<div class="error">
+				<span class="material-icons-outlined">cancel</span>
+				<span>Ismétlő jelszót meg kell adni!</span>
+			</div>
+		}
+	}
+
+	<div>
+		<input id="terms" class="checkbox" type="checkbox" aria-hidden="true" formControlName="terms" >
+		<label for="terms">Elfogadom az <a routerLink="/terms">Adatkezelési tájékoztatóban</a> foglaltakat</label>
+	</div>
+	@if (terms.invalid && terms.touched) {
+		@if (terms.errors?.['requiredTrue']) {
+			<div class="error">
+				<span class="material-icons-outlined">cancel</span>
+				<span>Adatkezelési tájékoztatóban foglaltakat el kell fogadni!</span>
+			</div>
+		}
+	}
+
+	<div class="row">
+		<div>
+			<input id="keep-logged-in" class="checkbox" type="checkbox" aria-hidden="true" formControlName="terms" >
+			<label for="keep-logged-in">Emlékezz rám</label>
+		</div>
+
+		<a routerLink="/forgot-password">Elfelejtett jelszó?</a>
+	</div>
+
+	<button [disabled]="registerForm.invalid" class="cta" type="submit">Register</button>
+	@if (errorMessage()) {
+		<div class="error">
+			<span class="material-icons-outlined">cancel</span>
+			<span>{{ errorMessage() }}</span>
+		</div>
+	}
+</form>
+
+<p>Már van fiókod? <a routerLink="/login">Bejelentkezés</a></p>

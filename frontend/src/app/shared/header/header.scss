@@ -1,0 +1,364 @@
+nav {
+	margin: var(--gap-small);
+
+	border: var(--border);
+	border-radius: calc(var(--nav-height) / 2);
+	background-color: hsl(var(--primary-hs), var(--lightness-800));
+}
+
+.navbar {
+	min-height: var(--nav-height);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 1rem 0 2rem;
+
+	.logo {
+		font-size: 1.3rem;
+		font-weight: bold;
+		text-decoration: none;
+		color: hsl(var(--accent-hs), var(--lightness-500));
+	}
+
+	> *:last-child {
+		justify-self: end;
+	}
+
+	/* links, navigation */
+	ul {
+		list-style-type: none;
+		padding-left: 0;
+	}
+
+	.br-round {
+		border-radius: var(--nav-height);
+	}
+
+	> #menu {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		height: var(--nav-height);
+
+		--container_width: 300px;
+		position: relative;
+		width: var(--container_width);
+
+		.slider {
+			display: none;
+			position: absolute;
+			height: 100%;
+			width: calc(var(--container_width) / 3);
+			z-index: 0;
+			left: 0;
+			top: 0;
+			transition: var(--transition);
+		}
+		> li {
+			width: 100%;
+			z-index: 1;
+	
+			&:has(a.active) ~ .slider {
+				border-bottom: 2px solid hsl(var(--accent-hs), var(--lightness-500));
+				display: inline-block;
+			}
+			&:nth-child(1):has(a.active) ~ .slider {
+				transform: translateX(calc(var(--container_width) * 0/3));
+			}
+			&:nth-child(2):has(a.active) ~ .slider {
+				transform: translateX(calc(var(--container_width) * 1/3));
+			}
+			&:nth-child(3):has(a.active) ~ .slider {
+				transform: translateX(calc(var(--container_width) * 2/3));
+			}
+
+			&:has(.sub-menu) {
+				position: relative;
+			}
+			.sub-menu {
+				position: absolute;
+				left: 50%;
+				transform: translate3d(-50%, 1rem, 0);
+				opacity: 0;
+				transition: var(--transition);
+				visibility: hidden;
+				pointer-events: none;
+				width: 17rem;
+				border: var(--border);
+				border-radius: var(--gap-small);
+				background-color: hsl(var(--primary-hs), var(--lightness-800));
+				padding: var(--gap-small);
+				z-index: 1;
+			}
+
+			&:has(.sub-menu) {
+				&:hover .sub-menu,
+				&:focus-within .sub-menu {
+					transform: translate3d(-50%, 0, 0);
+					opacity: 1;
+					visibility: visible;
+					pointer-events: auto;
+				}
+			}
+			> a {
+				width: 100%;
+				height: var(--nav-height);
+				text-decoration: none;
+				color: hsl(var(--primary-hs), var(--lightness-100));
+				display: grid;
+				place-content: center;
+				transition: var(--transition);
+	
+				&:hover,
+				&.active {
+					color: hsl(var(--accent-hs), var(--lightness-500));
+				}
+			}
+		}
+	}
+
+	/* user profile, settings, logout dropdown */
+	#user-menu {
+		display: flex;
+		justify-content: flex-end;
+
+		[type="checkbox"]:checked,
+		[type="checkbox"]:not(:checked) {
+			appearance: none;
+		}
+
+		label {
+			padding: .2rem;
+			display: flex;
+			border-radius: var(--gap-small);
+			user-select: none;
+
+			span {
+				cursor: pointer;
+				font-size: var(--fs-large);
+			}
+		}
+
+		.profile-image {
+			width: 2.5rem;
+			height: 2.5rem;
+			border-radius: 50%;
+		}
+
+		.login-btn {
+			border-radius: var(--nav-height);
+		}
+
+		/* magic */
+		// akkor fog lenyílni a dropdown, ha:
+		// ha rákattintasz vagy billentyűzettel ránavigálsz a labelre, akkor a checkbox-ra kerül a focus
+		// ha a lenyíló mezőre kerül ugyan ez a focus
+		// ha a dropdown látható és mégegyszer rákkattintasz a labelre, akkor egy pillanatra eltűnne a dropdown, ezt ellensújozza az actice pseudo class
+		#dropdown-toggle:focus ~ .dropdown,
+		.dropdown:focus-within,
+		#dropdown-toggle:active ~ .dropdown {
+			opacity: 1;
+			transform: translate3d(0, 0, 0);
+			pointer-events: auto;
+		}
+
+		#hamburger-container {
+			// width: 60px;
+			// height: 45px;
+			display: none;
+			width: 32px;
+			height: 32px;
+			position: relative;
+			-webkit-transform: rotate(0deg);
+			-moz-transform: rotate(0deg);
+			-o-transform: rotate(0deg);
+			transform: rotate(0deg);
+			-webkit-transition: .5s ease-in-out;
+			-moz-transition: .5s ease-in-out;
+			-o-transition: .5s ease-in-out;
+			transition: .5s ease-in-out;
+			cursor: pointer;
+
+			span {
+				display: block;
+				position: absolute;
+				height: 6px;
+				width: 100%;
+				background: #d3531a;
+				border-radius: 9px;
+				opacity: 1;
+				left: 0;
+				-webkit-transform: rotate(0deg);
+				-moz-transform: rotate(0deg);
+				-o-transform: rotate(0deg);
+				transform: rotate(0deg);
+				-webkit-transition: .25s ease-in-out;
+				-moz-transition: .25s ease-in-out;
+				-o-transition: .25s ease-in-out;
+				transition: .25s ease-in-out;
+
+				&:nth-child(1) {
+					top: 0px;
+				}
+
+				&:nth-child(2),
+				&:nth-child(3) {
+					top: 10px;
+				}
+
+				&:nth-child(4) {
+					top: 20px;
+				}
+			}
+
+			&.open span:nth-child(1) {
+				top: 10px;
+				width: 0%;
+				left: 50%;
+			}
+
+			&.open span:nth-child(2) {
+				-webkit-transform: rotate(45deg);
+				-moz-transform: rotate(45deg);
+				-o-transform: rotate(45deg);
+				transform: rotate(45deg);
+			}
+
+			&.open span:nth-child(3) {
+				-webkit-transform: rotate(-45deg);
+				-moz-transform: rotate(-45deg);
+				-o-transform: rotate(-45deg);
+				transform: rotate(-45deg);
+			}
+
+			&.open span:nth-child(4) {
+				top: 10px;
+				width: 0%;
+				left: 50%;
+			}
+		}
+
+		.dropdown {
+			z-index: 1;
+			position: absolute;
+			top: calc(var(--nav-height) + 20px);
+			min-width: 16rem;
+			display: flex;
+			flex-direction: column;
+
+			padding: var(--gap-small);
+			border: var(--border);
+			border-radius: var(--gap-small);
+			background-color: hsl(var(--primary-hs), var(--lightness-800));
+
+			opacity: 0;
+			transform: translate3d(0, -1rem, 0);
+			pointer-events: none;
+			/* !!! */
+			transition: var(--transition);
+
+			li {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: var(--gap-small);
+				padding: 0 1rem;
+				border-radius: var(--gap-small);
+				cursor: pointer;
+				transition: var(--transition);
+
+				&:hover {
+					background-color: hsl(var(--primary-hs), var(--lightness-700));
+				}
+
+				a {
+					color: hsl(var(--primary-hs), var(--lightness-100));
+					text-decoration: none;
+					padding: .6rem 0;
+				}
+			}
+		}
+	}
+}
+
+#mobile-nav {
+	flex-basis: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--gap-small);
+
+	height: 0px;
+	transition: var(--transition);
+
+	.mobile-nav-link-container:hover {
+		border-radius: var(--gap-small);
+		box-shadow: 0 0 0 2px hsl(var(--primary-hs), var(--lightness-600));
+	}
+
+	.accordion a,
+	.mobile-nav-link {
+		padding: 1rem 1.25rem;
+		font-size: var(--fs-medium);
+		font-weight: 800;
+		text-decoration: none;
+		color: hsl(var(--primary-hs), var(--lightness-100));
+
+		display: flex;
+		align-items: center;
+		gap: var(--gap-small);
+		border-radius: var(--gap-small);
+
+		&:active {
+			background-color: hsl(var(--primary-hs), var(--lightness-700));
+		}
+	}
+
+	.accordion {
+		border-radius: var(--gap-small);
+	
+		&:not(:has(input:checked)) {
+			box-shadow: 0 0 0 2px hsl(var(--primary-hs), var(--lightness-600));
+		}
+
+		.content {
+			padding: .25rem 1rem;
+			display: flex;
+			flex-direction: column;
+		}
+	}
+	
+	> *,
+	.content {
+		overflow: hidden;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	nav:has(#dropdown-toggle:checked) #mobile-nav {
+		height: calc(100vh - var(--nav-height) - 2 * var(--gap-small));
+	}
+
+	#menu {
+		display: none !important;
+	}
+
+	#user-menu {
+		.material-icons {
+			display: none;
+		}
+
+		#hamburger-container {
+			display: block !important;
+		}
+
+		.dropdown {
+			display: none !important;
+		}
+	}
+
+	// #mobile-nav {
+	// 	height: calc(100vh - var(--nav-height) - 2 * var(--gap-small));
+	// }
+}

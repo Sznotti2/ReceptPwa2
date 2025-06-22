@@ -1,0 +1,12 @@
+footer {
+	margin: var(--gap-small);
+	border: var(--border);
+	border-radius: calc(var(--nav-height) / 2);
+	background-color: hsl(var(--primary-hs), var(--lightness-800));
+
+	min-height: var(--nav-height);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 1rem 0 2rem;
+}

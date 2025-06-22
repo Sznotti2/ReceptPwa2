@@ -1,0 +1,61 @@
+<main>
+	<form [formGroup]="loginForm" (ngSubmit)="login()">
+		<h2 class="title">Bejelentkezés</h2>
+
+		<div class="form-group">
+			<input type="text" placeholder="" formControlName="email">
+			<label>Email vagy felhasználónév</label>
+		</div>
+		
+		@if (email.invalid && email.touched) {
+			@if (email.errors?.['required']) {
+				<div class="error">
+					<span class="material-icons">cancel</span>
+                    <span>Az email címet meg kell adni!</span>
+                </div>
+			}
+		}
+
+		<div class="form-group icon-input">
+			<input [type]="inputType()" placeholder="" formControlName="password" [ngClass]="password.valid ? 'valid' : password.touched ? 'invalid' : ''" >
+			<label>Jelszó</label>
+            @if (!passwordVisible()) {
+				<button (click)="revealPassword()" type="button">
+					<i class="material-icons icon">visibility_off</i>
+					<span class="visually-hidden">Jelszó felfedése</span>
+				</button>              
+            } @else {
+				<button (click)="revealPassword()" type="button">
+					<i class="material-icons icon">visibility</i>
+					<span class="visually-hidden">Jelszó elrejtése</span>
+				</button>
+            }
+		</div>
+		@if (password.invalid && password.touched) {
+			@if (password.errors?.['required']) {
+				<div class="error">
+					<span class="material-icons">cancel</span>
+                    <span>Jelszót kötelező megadni!</span>
+                </div>
+			}
+		}
+
+		<div class="row">
+			<div class="switch-container">
+				<input type="checkbox" class="toggle-switch" id="keep-logged-in">
+				<label for="keep-logged-in">Emlékezz rám</label>
+			</div>
+
+			<a routerLink="/forgot-password">Elfelejtett jelszó?</a>
+		</div>
+
+		<button [disabled]="loginForm.invalid" class="cta" type="submit">Belépés</button>
+		@if (errorMessage()) {
+			<div class="error">
+				<span class="material-icons-outlined">cancel</span>
+				<span>{{ errorMessage() }}</span>
+			</div>
+		}
+	</form>
+	<p>Már van fiókod? <a routerLink="/register">Regisztrálj</a></p>
+</main>
