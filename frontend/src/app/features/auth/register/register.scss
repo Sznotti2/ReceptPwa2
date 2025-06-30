@@ -1,39 +1,13 @@
-form {
-	width: 30rem;
-	max-width: calc(100% - var(--gap-small) * 2);
-	margin: 0 auto;
-	padding: 3rem clamp(1rem, 5vw, 3rem);
-	border: 2px solid hsl(var(--primary-hs), var(--lightness-800));
-	border-radius: 1rem;
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-	margin-bottom: 1rem;
-
-	.row {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: var(--gap-small);
-		flex-wrap: wrap;
-	}
-
-	.error {
-		padding: .5rem 1rem;
-		border: 2px solid hsla(var(--warning-hs), 50%, 1);
-		border-radius: .5rem;
-		background-color: hsla(var(--warning-hs), 50%, 0.2);
-		font-weight: bold;
-		display: flex;
-		align-items: center;
-		gap: 1rem;
-
-		* {
-			color: hsla(var(--warning-hs), 50%, 1);
-		}
-	}
-}
-
 p {
 	text-align: center;
+}
+
+.infocard {
+	text-align: center;
+
+	.inps {
+		display: flex;
+		gap: 1rem;
+		flex-direction: row;
+	}
 }

@@ -6,7 +6,7 @@ import { map, Observable } from 'rxjs';
 @Injectable({
 	providedIn: 'root'
 })
-export class Auth {
+export class AuthService {
 	http = inject(HttpClient);
 	// imgbbService = inject(ImgbbService);
 	apiUrl = 'http://localhost:5000/api/user';

@@ -1,0 +1,12 @@
+<div class="dropdown selectDropdown" [class.filled]="selectedOption()" [class.open]="isOpen()">
+	<!-- A span mutatja a kiválasztott értéket, vagy alapértelmezetten a placeholder-t -->
+	<span (click)="toggleDropdown()">{{ selectedOption() || placeholder() }}</span>
+	<!-- Az opciókat tartalmazó lista -->
+	<ul>
+        @for (option of options(); track $index) {
+            <li [class.active]="option === selectedOption()">
+                <a href="#" (click)="onOptionClick($event, option)">{{ option }}</a>
+            </li>
+        }
+	</ul>
+</div>

@@ -1,6 +1,6 @@
 import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { Auth } from '../services/auth';
+import { AuthService } from '../services/auth.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgClass } from '@angular/common';
 
@@ -12,7 +12,7 @@ import { NgClass } from '@angular/common';
 })
 export class Login {
 	private router = inject(Router);
-	private authService = inject(Auth);
+	private authService = inject(AuthService);
 
 	loginForm: FormGroup;
 	constructor(private formBuilder: FormBuilder) {

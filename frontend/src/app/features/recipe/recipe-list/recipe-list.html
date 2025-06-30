@@ -1,0 +1,30 @@
+<section>
+	@for (recipe of recipeResource(); track $index) {
+		<div class="recipe-card">
+			<img [src]="recipe.image" alt="{{ recipe.name }}">
+	
+			<div class="tags">
+				@for (tag of recipe.categories; track $index) {
+					<a class="chips link" href="#">{{ tag }}</a>
+				}
+			</div>
+		
+			<h3 [routerLink]="[ '/recipe', recipe.id ]" class="title">{{ recipe.name }}</h3>
+		
+			<ul class="info">
+				<li>
+					<span>{{ recipe.servings }} adag</span>
+				</li>
+				<li>
+					<span class="material-icons">star</span>
+					{{ recipe.rating }}
+				</li>
+				<li>
+					<i class="material-icons favorite-icon">favorite_border</i>
+				</li>
+			</ul>
+		</div>
+	} @empty {
+        <p>no recipes found</p>
+    }
+</section>

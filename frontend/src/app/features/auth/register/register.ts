@@ -2,7 +2,7 @@ import { NgClass } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { Auth } from '../services/auth';
+import { AuthService } from '../services/auth.service';
 
 const hasOnlyLowercaseLetters = (control: AbstractControl): ValidationErrors | null => {
 	return /[A-Z]/.test(control.value) ? null : { hasOnlyLowercaseLetters: true };
@@ -15,9 +15,13 @@ const hasOnlyLowercaseLetters = (control: AbstractControl): ValidationErrors | n
 })
 export class Register {
 	router = inject(Router);
-	authService = inject(Auth);
+	authService = inject(AuthService);
+
+	//TODO: get email from user after @
+	userEmail = signal<string>("gmail.com");
 
 	registerForm: FormGroup;
+	verificationForm: FormGroup;
 	constructor(private formBuilder: FormBuilder) {
 		// this.registerForm = this.formBuilder.group({
 		// 	name: ["", {
@@ -43,6 +47,16 @@ export class Register {
 			password2: [""],
 			terms: [false]
 		});
+
+
+		this.verificationForm = this.formBuilder.group({
+			code1: ["", { validators: [Validators.required, Validators.minLength(1), Validators.maxLength(1)] }],
+			code2: ["", { validators: [Validators.required, Validators.minLength(1), Validators.maxLength(1)] }],
+			code3: ["", { validators: [Validators.required, Validators.minLength(1), Validators.maxLength(1)] }],
+			code4: ["", { validators: [Validators.required, Validators.minLength(1), Validators.maxLength(1)] }],
+			code5: ["", { validators: [Validators.required, Validators.minLength(1), Validators.maxLength(1)] }],
+			code6: ["", { validators: [Validators.required, Validators.minLength(1), Validators.maxLength(1)] }]
+		});
 	}
 
 	errorMessage = signal<string>("");
@@ -61,6 +75,55 @@ export class Register {
 
 		console.log("Register form submitted", this.registerForm.value);
 	}
+
+
+	showInfocard = true;
+	startVerification() {
+		this.showInfocard = true;
+	}
+	/** Ezt löki át a template minden input eventnél */
+	onInput(event: Event, nextInputId?: string) {
+		const input = event.target as HTMLInputElement;
+		// ha beírtál valamit, léptessünk
+		if (input.value && nextInputId) {
+			const next: HTMLElement | null = document.querySelector(`#${nextInputId}`);
+			if (next) next.focus();
+		}
+
+		// ha minden mező valid, hívjuk a metódust
+		if (this.verificationForm.valid) {
+			this.onVerify();
+		}
+	}
+	onPaste(event: ClipboardEvent) {
+		event.preventDefault();
+		const pasted = event.clipboardData?.getData('text/plain')?.trim() || '';
+		// csak az első 6 érvényes karakter
+		const chars = pasted.split('').filter(c => /\d/.test(c)).slice(0, 6);
+
+		// beállítjuk a formControl-okat
+		chars.forEach((ch, idx) => {
+		this.verificationForm.get(`code${idx + 1}`)?.setValue(ch);
+		});
+		// töröljük a maradék mezőket, ha rövidebb volt a paste
+		for (let i = chars.length; i < 6; i++) {
+		this.verificationForm.get(`code${i + 1}`)?.setValue('');
+		}
+
+		// fókusz az utolsó beállított mező +1-re, vagy a hatodikra
+		const focusIdx = chars.length < 6 ? chars.length + 1 : 6;
+		const next: HTMLInputElement|null = document.querySelector(`#code${focusIdx}`);
+		if (next) next.focus();
+
+		// ha minden mező valid, hívjuk
+		if (this.verificationForm.valid) {
+		this.onVerify();
+		}
+	}
+	onVerify() {
+		alert("Verification code sent to your email. Please check your inbox.");
+	}
+
 
 	passwordVisible = signal(false);
 	inputType = signal("password");

@@ -1,4 +1,4 @@
-<form [formGroup]="editForm" (ngSubmit)="edit()">
+<form [formGroup]="editForm" (ngSubmit)="onEdit()">
 	<h2 class="title">Profil szerkesztése</h2>
 
 	<div class="form-group">
@@ -30,8 +30,8 @@
 	<div class="image-upload">
 		<label for="profile-image">
 			<div class="label-content">
-				@if (imageSrc) {
-					<img [src]="imageSrc" alt="">
+				@if (imageSrc()) {
+					<img [src]="imageSrc()" alt="">
 				} @else {
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none"
 						viewBox="0 0 24 24" stroke="currentColor">
@@ -46,5 +46,109 @@
 	</div>
 
 	<button [disabled]="editForm.invalid" type="submit">Módosítás</button>
-	<button class="warning" type="button" (click)="delete()">Fiók törlése</button>
+	<button class="warning" type="button" (click)="onDelete()">Fiók törlése</button>
+	<button type="button" (click)="startVerification()">Jelszó megváltoztatása</button>
 </form>
+
+@if (showInfocard) {
+	<form class="infocard" [formGroup]="verificationForm" (ngSubmit)="onVerify()">
+		<h2>Verification Code</h2>
+		<p>Enter the 6-digit code we've sent to your <a href="https://{{ userEmail() }}" target="_blank" rel="noopener noreferrer">mail</a></p>
+		<div class="inps">
+			<input
+				id="code1"
+				#code1
+				type="text"
+				formControlName="code1"
+				maxlength="1"
+				required
+				(input)="onInput($event,'code2')"
+			    (paste)="onPaste($event)"
+			/>
+
+			<input
+				id="code2"
+				#code2
+				type="text"
+				formControlName="code2"
+				maxlength="1"
+				required
+				(input)="onInput($event,'code3')"
+			    (paste)="onPaste($event)"
+			/>
+
+			<input
+				id="code3"
+				#code3
+				type="text"
+				formControlName="code3"
+				maxlength="1"
+				required
+				(input)="onInput($event,'code4')"
+			    (paste)="onPaste($event)"
+			/>
+
+			<input
+				id="code4"
+				#code4
+				type="text"
+				formControlName="code4"
+				maxlength="1"
+				required
+				(input)="onInput($event,'code5')"
+			    (paste)="onPaste($event)"
+			/>
+
+			<input
+				id="code5"
+				#code5
+				type="text"
+				formControlName="code5"
+				maxlength="1"
+				required
+				(input)="onInput($event,'code6')"
+			    (paste)="onPaste($event)"
+			/>
+
+			<input
+				id="code6"
+				#code6
+				type="text"
+				formControlName="code6"
+				maxlength="1"
+				required
+				(input)="onInput($event)"
+			    (paste)="onPaste($event)"
+			/>
+		</div>
+		<button class="cta" type="submit">Verify</button>
+		<button type="button">Go back to log in</button>
+	</form>
+}
+@if (showchangePassword) {
+	<form [formGroup]="changePasswordForm" (ngSubmit)="onChangePassword()">
+		<h2 class="title">Jelszó megváltoztatása</h2>
+		<div class="form-group">
+			<input type="password" placeholder=" " formControlName="currentPassword">
+			<label>Jelenlegi jelszó</label>
+		</div>
+		<div class="form-group">
+			<input type="password" placeholder=" " formControlName="newPassword">
+			<label>Új jelszó</label>
+		</div>
+		<div class="form-group">
+			<input type="password" placeholder=" " formControlName="confirmPassword">
+			<label>Új jelszó megerősítése</label>
+		</div>
+		<button class="cta" [disabled]="changePasswordForm.invalid" type="submit">Jelszó megváltoztatása</button>
+	</form>
+}
+
+@if (showModal) {
+	<app-modal
+		title="Fiók törlése"
+		message="Biztosan szeretnéd törölni a fiókodat? Ez végleges."
+		(onConfirm)="onModalConfirm()"
+		(onCancel)="onModalCancel()">
+	</app-modal>
+}

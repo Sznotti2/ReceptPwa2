@@ -133,3 +133,79 @@
 </form>
 
 <p>Már van fiókod? <a routerLink="/login">Bejelentkezés</a></p>
+
+
+@if (showInfocard) {
+	<form class="infocard" [formGroup]="verificationForm" (ngSubmit)="onVerify()">
+		<h2>Verification Code</h2>
+		<p>Enter the 6-digit code we've sent to your <a href="https://{{ userEmail() }}" target="_blank" rel="noopener noreferrer">mail</a></p>
+		<div class="inps">
+			<input
+				id="code1"
+				#code1
+				type="text"
+				formControlName="code1"
+				maxlength="1"
+				required
+				(input)="onInput($event,'code2')"
+			    (paste)="onPaste($event)"
+			/>
+
+			<input
+				id="code2"
+				#code2
+				type="text"
+				formControlName="code2"
+				maxlength="1"
+				required
+				(input)="onInput($event,'code3')"
+			    (paste)="onPaste($event)"
+			/>
+
+			<input
+				id="code3"
+				#code3
+				type="text"
+				formControlName="code3"
+				maxlength="1"
+				required
+				(input)="onInput($event,'code4')"
+			    (paste)="onPaste($event)"
+			/>
+
+			<input
+				id="code4"
+				#code4
+				type="text"
+				formControlName="code4"
+				maxlength="1"
+				required
+				(input)="onInput($event,'code5')"
+			    (paste)="onPaste($event)"
+			/>
+
+			<input
+				id="code5"
+				#code5
+				type="text"
+				formControlName="code5"
+				maxlength="1"
+				required
+				(input)="onInput($event,'code6')"
+			    (paste)="onPaste($event)"
+			/>
+
+			<input
+				id="code6"
+				#code6
+				type="text"
+				formControlName="code6"
+				maxlength="1"
+				required
+				(input)="onInput($event)"
+			    (paste)="onPaste($event)"
+			/>
+		</div>
+		<button class="cta" type="submit">Verify</button>
+	</form>
+}
