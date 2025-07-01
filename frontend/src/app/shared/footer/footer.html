@@ -1,3 +1,15 @@
 <footer>
 	<p>Készítette: egy gazember, Copyright &copy; 2025</p>
+	<p class="link" (click)="openModal()">Felhasználási feltételek</p>
 </footer>
+
+@if (showModal()) {
+	<app-modal
+		   [title]="'Felhasználási feltételek'"
+		   [contentHtml]="safeHtml"
+		   (confirm)="closeModal()"
+		   (cancel)="closeModal()"
+		   [showConfirmButton]="true"
+		   [showCancelButton]="true">
+	</app-modal>
+}

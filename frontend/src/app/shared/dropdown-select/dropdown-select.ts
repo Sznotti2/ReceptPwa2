@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, EventEmitter, forwardRef, HostListener, input, signal, Output } from '@angular/core';
+import { Component, ElementRef, forwardRef, HostListener, input, signal, output } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -21,7 +21,7 @@ export class DropdownSelect {
 	options = input.required<string[]>();
 
 	// A kiválasztott érték változásának jelezése az esetleges szülő komponens felé
-	@Output() selectionChange = new EventEmitter<string>();
+	selectionChange = output<string>();
 
 	selectedOption = signal<string>("");
 	isOpen = signal<boolean>(false);

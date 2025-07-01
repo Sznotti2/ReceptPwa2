@@ -2,7 +2,7 @@ import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { RecipeList } from '../recipe-list/recipe-list';
 import { RecipeService } from '../services/recipe-service';
 import { RouterLink } from '@angular/router';
-import { httpResource, HttpResourceRef } from '@angular/common/http';
+import { httpResource } from '@angular/common/http';
 import { Recipe } from '../models/recipe';
 
 @Component({

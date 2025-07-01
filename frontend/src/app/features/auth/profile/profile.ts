@@ -5,6 +5,7 @@ import { User } from '../models/user';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgClass } from '@angular/common';
 import { Modal } from '../../../shared/modal/modal';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-profile',
@@ -28,7 +29,7 @@ export class Profile {
 	editForm: FormGroup;
 	verificationForm: FormGroup;
 	changePasswordForm: FormGroup;
-	constructor(private formBuilder: FormBuilder) {
+	constructor(private formBuilder: FormBuilder, private sanitizer: DomSanitizer) {
 		this.editForm = this.formBuilder.group({
 			username: ["", { validators: [Validators.required] }],
 			bio: [""],
@@ -52,6 +53,8 @@ export class Profile {
 			newPassword: ["", { validators: [Validators.required] }],
 			confirmPassword: ["", { validators: [Validators.required] }],
 		});
+
+		this.safeHtml = sanitizer.bypassSecurityTrustHtml(this.rawHtml);
 	}
 
 	ngOnInit(): void {
@@ -98,6 +101,10 @@ export class Profile {
 		}
 	}
 
+	rawHtml = `
+		<p>Biztosan törölni szeretnéd a fiókodat? Ez végleges.</p>
+	`;
+	safeHtml: SafeHtml;
 	showModal = false;
 	onDelete() {
 		this.showModal = true;
@@ -109,6 +116,7 @@ export class Profile {
 	onModalCancel() {
 		this.showModal = false;
 	}
+
 
 	showInfocard = true;
 	startVerification() {

@@ -1,4 +1,4 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, Signal, signal } from '@angular/core';
 import { Recipe } from '../models/recipe';
 import { environment } from '../../../../environments/enviorment.prod';
 import { catchError, map, Observable, of, throwError } from 'rxjs';
@@ -29,7 +29,20 @@ export class RecipeService {
 	addRecipe(recipe: Recipe): void {
 	}
 
-	getRecipeBySlug(slug: string): void {
+	getRecipeBySlug(slug: string): Signal<any> {
+		let fileRes = httpResource<any>(() => ({
+			url: `www.themealdb.com/api/json/v1/1/lookup.php?i=${slug}`,
+			method: 'GET',
+			responseType: 'json'
+		}));
+
+		let recipe = computed(() => {
+			const res = fileRes.value();
+			if (!res?.meals) return [];
+			return res.meals;
+		});
+
+		return recipe;
 	}
 
 	editRecipe(recipe: Recipe): void {

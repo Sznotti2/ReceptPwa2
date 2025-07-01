@@ -147,8 +147,8 @@
 @if (showModal) {
 	<app-modal
 		title="Fiók törlése"
-		message="Biztosan szeretnéd törölni a fiókodat? Ez végleges."
-		(onConfirm)="onModalConfirm()"
-		(onCancel)="onModalCancel()">
+		[contentHtml]="safeHtml"
+		(confirm)="onModalConfirm()"
+		(cancel)="onModalCancel()">
 	</app-modal>
 }

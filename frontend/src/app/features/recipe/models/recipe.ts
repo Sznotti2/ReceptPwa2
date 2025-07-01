@@ -7,10 +7,10 @@ export interface Recipe {
 	timeToMake: number;
 	rating: number;
 	servings: number; // adagok
-	// slug: string;
-	// difficulty: string;
-	// ingredients: Ingredient[];
-	// instructions: Instruction[];
+	slug?: string;
+	difficulty?: string;
+	ingredients?: Ingredient[];
+	instructions?: Instruction[];
 }
 
 export interface Ingredient {
