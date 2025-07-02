@@ -5,7 +5,6 @@ export interface Recipe {
 	image: string;
 	categories: string[];
 	timeToMake: number;
-	rating: number;
 	servings: number; // adagok
 	slug?: string;
 	difficulty?: string;

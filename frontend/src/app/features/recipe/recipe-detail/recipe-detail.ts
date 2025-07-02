@@ -18,5 +18,7 @@ export class RecipeDetail {
 		const recipeId = this.route.snapshot.params['id'];
 		const recipeSignal = this.recipeServise.getRecipeBySlug(recipeId);
 		this.recipe.set(recipeSignal());
+
+		console.log(this.recipe());
 	}
 }

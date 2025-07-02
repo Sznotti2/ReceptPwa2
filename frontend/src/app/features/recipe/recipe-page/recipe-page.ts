@@ -32,7 +32,6 @@ export class RecipePage {
 			image: m.strMealThumb,
 			categories: [m.strCategory].filter(Boolean),
 			timeToMake:  Math.floor(Math.random()*60)+20,
-			rating:      Math.random()*5,
 			servings:    Math.floor(Math.random()*6)+1,
 		}));
 	});
