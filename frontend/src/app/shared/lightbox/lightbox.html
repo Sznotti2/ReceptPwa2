@@ -1,0 +1,13 @@
+@if (visible) {
+	<div class="backdrop" @fade (click)="close()"></div>
+
+	<div class="lightbox" @scale>
+		<button class="solid" (click)="prev($event)">
+			<span class="material-icons icon">chevron_left</span>
+		</button>
+		<img [src]="images[currentIndex]" />
+		<button class="solid" (click)="next($event)">
+			<span class="material-icons icon">chevron_right</span>
+		</button>
+	</div>
+}

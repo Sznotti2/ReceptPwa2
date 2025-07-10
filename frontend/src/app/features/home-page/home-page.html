@@ -1,1 +1,193 @@
-<p>home-page works!</p>
+<!-- https://dribbble.com/shots/24164026-NomNom-Recipe-App -->
+ <!-- https://dribbble.com/shots/21365759-Food-Recipe-Landing-Page-Design -->
+
+<section style="border: 1px solid black;">
+	<button>Button</button>
+	<button class="outlined">Outlined</button>
+	<button class="solid">Solid</button>
+	<button class="round">Round</button>
+	<button disabled>Disabled</button>
+
+	<button class="cta">CTA</button>
+	<button class="cta outlined">Outlined</button>
+	<button class="cta solid">Solid</button>
+	<button class="cta round">Round</button>
+	<button class="cta" disabled>Disabled</button>
+
+	<button class="warning">Warning</button>
+	<button class="warning outlined">Warning</button>
+	<button class="warning solid">Warning</button>
+	<button class="warning outlined solid round">Warning</button>
+	<button class="warning" disabled>Disabled</button>
+
+	<button class="success">Success</button>
+	<button class="success outlined">Success</button>
+	<button class="success solid">Success</button>
+	<button class="success outlined solid round">Success</button>
+	<button class="success" disabled>Disabled</button>
+
+	<button>
+		<i class="material-icons icon">add</i>
+	</button>
+	<button class="outlined">
+		<i class="material-icons icon">add</i>
+	</button>
+	<button class="round">
+		<i class="material-icons icon">add</i>
+	</button>
+	<button class="solid">
+		<i class="material-icons icon">add</i>
+		Gomb ikonnal
+	</button>
+	<button class="round">
+		Gomb ikonnal
+		<i class="material-icons icon">add</i>
+	</button>
+	<button disabled>
+		<i class="material-icons icon">add</i>
+	</button>
+
+	<button class="loading">
+		<div class="loader"></div>
+	</button>
+	<button class="loading outlined">
+		<div class="loader"></div>
+	</button>
+	<button class="loading solid">
+		<div class="loader"></div>
+	</button>
+	<button class="loading round">
+		<div class="loader"></div>
+	</button>
+	<button class="loading" disabled>
+		<div class="loader"></div>
+	</button>
+
+</section>
+
+
+<section>
+	<h2>Kategóriák</h2>
+	<div class="slider">
+		<div class="category-card">
+			<img src="https://picsum.photos/200/300?random=1" alt="Kép 1" />
+			<span>Reggeli</span>
+		</div>
+
+
+		<div class="category-card">
+			<img src="https://picsum.photos/200/300?random=1" alt="Kép 1" />
+			<span>Reggeli</span>
+		</div>
+		<div class="category-card">
+			<img src="https://picsum.photos/200/300?random=1" alt="Kép 1" />
+			<span>Reggeli</span>
+		</div>
+		<div class="category-card">
+			<img src="https://picsum.photos/200/300?random=1" alt="Kép 1" />
+			<span>Reggeli</span>
+		</div>
+		<div class="category-card">
+			<img src="https://picsum.photos/200/300?random=1" alt="Kép 1" />
+			<span>Reggeli</span>
+		</div>
+		<div class="category-card">
+			<img src="https://picsum.photos/200/300?random=1" alt="Kép 1" />
+			<span>Reggeli</span>
+		</div>
+		<div class="category-card">
+			<img src="https://picsum.photos/200/300?random=1" alt="Kép 1" />
+			<span>Reggeli</span>
+		</div>
+		<div class="category-card">
+			<img src="https://picsum.photos/200/300?random=1" alt="Kép 1" />
+			<span>Reggeli</span>
+		</div>
+	</div>
+</section>
+
+<section>
+	<div class="row">
+		<h2>Szezonális receptek</h2>
+		<a [routerLink]="['/recipes&category=seasonal']" >Mutass többet</a>
+	</div>
+	@if (onMobile()) {
+		<div class="slider">
+			<div class="recipe-card" [routerLink]="['/recipe', 1]">
+				<h3>Recept címe</h3>
+				<img src="https://picsum.photos/200/300?random=1" alt="Kép 2" />
+				<div class="recipe-info">
+					<span>30 perc</span>
+					<span>Könnyű</span>
+					<span class="material-icons">favorite</span>
+				</div>
+			</div>
+		</div>
+	} @else {
+		<div class="recipe-list">
+
+			<div class="recipe-card" [routerLink]="['/recipe', 1]">
+				<h3>Fekete-erdő torta ropogós kekszréteggel</h3>
+				<img src="https://picsum.photos/200/300?random=2" alt="Kép 2" />
+				<div class="chips">
+					<li><a href="#">Torta</a></li>
+					<li><a href="#">Csokoládé</a></li>
+					<li><a href="#">Őszi</a></li>
+				</div>
+				<div class="recipe-info">
+					<span>30 perc</span>
+					<span>3 adag</span>
+					<span>Könnyű</span>
+					<span class="material-icons fav-icon">favorite</span>
+				</div>
+			</div>
+
+
+			<div class="recipe-card" [routerLink]="['/recipe', 1]">
+				<h3>Oroszkrémtorta</h3>
+				<img src="https://picsum.photos/200/300?random=2" alt="Kép 2" />
+				<div class="chips">
+					<li><a href="#">Torta</a></li>
+					<li><a href="#">Csokoládé</a></li>
+					<li><a href="#">Őszi</a></li>
+				</div>
+				<div class="recipe-info">
+					<span>30 perc</span>
+					<span>Könnyű</span>
+					<span class="material-icons fav-icon">favorite</span>
+				</div>
+			</div>
+		</div>
+	}
+</section>
+
+<section>
+	<div class="row">
+		<h2>Blogjaink</h2>
+		<a [routerLink]="['/blog']" >Mutass többet</a>
+	</div>
+	<div class="blog-list">
+		<div class="blog-card">
+			<img src="https://picsum.photos/200/300?random=3" alt="Kép 3" />
+			<h3>Blog címe</h3>
+			<p>Blog rövid leírás. Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio temporibus dolores odit sequi sit placeat repudiandae?</p>
+		</div>
+
+
+		<div class="blog-card">
+			<img src="https://picsum.photos/200/300?random=3" alt="Kép 3" />
+			<h3>Blog címe</h3>
+			<p>Blog rövid leírás. Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio temporibus dolores odit sequi sit placeat repudiandae?</p>
+		</div>
+		<div class="blog-card">
+			<img src="https://picsum.photos/200/300?random=3" alt="Kép 3" />
+			<h3>Blog címe</h3>
+			<p>Blog rövid leírás. Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio temporibus dolores odit sequi sit placeat repudiandae?</p>
+		</div>
+		<div class="blog-card">
+			<img src="https://picsum.photos/200/300?random=3" alt="Kép 3" />
+			<h3>Blog címe</h3>
+			<p>Blog rövid leírás. Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio temporibus dolores odit sequi sit placeat repudiandae?</p>
+		</div>
+	</div>
+</section>

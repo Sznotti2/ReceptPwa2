@@ -1,86 +1,94 @@
-<header>
-	<img src="https://www.themealdb.com/images/media/meals/xd9aj21740432378.jpg">
+@if (recipe()) {
+	<!-- <app-lightbox 
+		[images]="imgs" 
+		(close)="recipe.set(null)">
+	</app-lightbox> -->
 
-	<div class="recipe-info">
-		<h1 class="recipie-title">Valami frappáns sütinév</h1>
-		<div class="details">
-			<p>40 perc</p>
-			<p>4 adag</p>
-			<p>Nehézség: könnyű</p>
-		</div>
-		<ul class="chips">
-			<li><a class="chips link" href="#">Desszert</a></li>
-			<li><a class="chips link" href="#">Gyors</a></li>
-			<li><a class="chips link" href="#">Egyszerű</a></li>
-			<li><a class="chips link" href="#">Édes</a></li>
-		</ul>		
-		<div class="author">
-			<span class="material-icons">person</span>
-			<div class="author-details">
-				<span>Marsai Martina</span>
-				<p>Publikálás: 2025.07.02.</p>
+	<header>
+		<img src="https://www.themealdb.com/images/media/meals/xd9aj21740432378.jpg" alt="wasd">
+
+		<div class="recipe-info">
+			<h1 class="recipie-title">Valami frappáns sütinév</h1>
+			<div class="details">
+				<p>40 perc</p>
+				<p>4 adag</p>
+				<p>Nehézség: könnyű</p>
+			</div>
+			<ul class="chips">
+				<li><a class="chips link" href="#">Desszert</a></li>
+				<li><a class="chips link" href="#">Gyors</a></li>
+				<li><a class="chips link" href="#">Egyszerű</a></li>
+				<li><a class="chips link" href="#">Édes</a></li>
+			</ul>		
+			<div class="author">
+				<span class="material-icons">person</span>
+				<div class="author-details">
+					<span>Marsai Martina</span>
+					<p>Publikálás: 2025.07.02.</p>
+				</div>
 			</div>
 		</div>
-	</div>
-</header>
+	</header>
 
+	<div class="recipe-body">
+		<section class="process">
+			<section class="author-notes">
+				<h3>Cukrászunk megjegyzése</h3>
+				<p class="description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti ipsam perspiciatis quas eveniet ducimus non quae ad eaque molestiae facere itaque error, vel soluta sed magnam, tempore laboriosam ratione commodi!</p>
+			</section>
 
-<div class="recipe-body">
-	<section class="process">
-		<section class="author-notes">
-			<h3>Cukrászunk megjegyzése</h3>
-			<p class="description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corrupti ipsam perspiciatis quas eveniet ducimus non quae ad eaque molestiae facere itaque error, vel soluta sed magnam, tempore laboriosam ratione commodi!</p>
-		</section>
+			<div class="ingredients">
+				<h3>Hozzávalók</h3>
 
-		<div class="ingredients">
-			<h3>Hozzávalók</h3>
+				<!-- @for (item of recipe?.ingredients; track $index) {
+					<p>{{ item.title }}:</p>
+					<ul>
+						@for (ingredient of item.ingredientList; track $index) {
+							<li>{{ ingredient }}</li>
+						}
+					</ul>
+				} -->
 
-			<!-- @for (item of recipe?.ingredients; track $index) {
-				<p>{{ item.title }}:</p>
+				<p>Valami Cím:</p>
 				<ul>
-					@for (ingredient of item.ingredientList; track $index) {
-						<li>{{ ingredient }}</li>
-					}
+					<li>tej</li>
+					<li>cukor</li>
+					<li>tojás</li>
+					<li>liszt</li>
+					<li>vaj</li>
+					<li>vanília</li>
 				</ul>
-			} -->
+			</div>
 
-			<p>Valami Cím:</p>
-			<ul>
-				<li>tej</li>
-				<li>cukor</li>
-				<li>tojás</li>
-				<li>liszt</li>
-				<li>vaj</li>
-				<li>vanília</li>
-			</ul>
-		</div>
-
-		<div class="instructions">
-			<h3>Elkészítés</h3>
-			
-			<ol>
-				<!-- @for (item of recipe?.instructions; track $index) {
+			<div class="instructions">
+				<h3>Elkészítés</h3>
+				
+				<ol>
+					<!-- @for (item of recipe?.instructions; track $index) {
+						<li>
+							<p>{{ item.text }}</p>
+							<div class="image-gallery">
+								@for (image of item.images; track $index) {
+									<img src="{{ image }}" alt="">
+								}
+							</div>
+						</li>
+					} -->
 					<li>
-						<p>{{ item.text }}</p>
+						<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nesciunt, omnis quis dolorem voluptatum fuga quas aperiam aspernatur eaque quia repellat ex officiis aliquid ea sed error aliquam? Molestiae, temporibus laudantium.</p>
 						<div class="image-gallery">
-							@for (image of item.images; track $index) {
-								<img src="{{ image }}" alt="">
-							}
+							<img src="https://www.themealdb.com/images/media/meals/xd9aj21740432378.jpg" alt="">
+							<img src="https://www.themealdb.com/images/media/meals/xd9aj21740432378.jpg" alt="">
+							<img src="https://www.themealdb.com/images/media/meals/xd9aj21740432378.jpg" alt="">
 						</div>
 					</li>
-				} -->
-				<li>
-					<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nesciunt, omnis quis dolorem voluptatum fuga quas aperiam aspernatur eaque quia repellat ex officiis aliquid ea sed error aliquam? Molestiae, temporibus laudantium.</p>
-					<div class="image-gallery">
-						<img src="https://www.themealdb.com/images/media/meals/xd9aj21740432378.jpg" alt="">
-						<img src="https://www.themealdb.com/images/media/meals/xd9aj21740432378.jpg" alt="">
-						<img src="https://www.themealdb.com/images/media/meals/xd9aj21740432378.jpg" alt="">
-					</div>
-				</li>
-			</ol>
-		</div>
-	</section>
-</div>
+				</ol>
+			</div>
+		</section>
+	</div>
+}
+
+
 
 <section class="comment-thread">
 	<h3>Komment Szekció</h3>

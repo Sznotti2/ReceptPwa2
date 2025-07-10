@@ -1,6 +1,6 @@
-<main>
-	<form [formGroup]="loginForm" (ngSubmit)="login()">
-		<h2 class="title">Bejelentkezés</h2>
+<form [formGroup]="loginForm" (ngSubmit)="login()">
+	<fieldset>
+		<legend>Bejelentkezés</legend>
 
 		<div class="form-group">
 			<input type="text" placeholder="" formControlName="email">
@@ -11,32 +11,32 @@
 			@if (email.errors?.['required']) {
 				<div class="error">
 					<span class="material-icons">cancel</span>
-                    <span>Az email címet meg kell adni!</span>
-                </div>
+					<span>Az email címet meg kell adni!</span>
+				</div>
 			}
 		}
 
 		<div class="form-group icon-input">
 			<input [type]="inputType()" placeholder="" formControlName="password" [ngClass]="password.valid ? 'valid' : password.touched ? 'invalid' : ''" >
 			<label>Jelszó</label>
-            @if (!passwordVisible()) {
+			@if (!passwordVisible()) {
 				<button (click)="revealPassword()" type="button">
 					<i class="material-icons icon">visibility_off</i>
 					<span class="visually-hidden">Jelszó felfedése</span>
 				</button>              
-            } @else {
+			} @else {
 				<button (click)="revealPassword()" type="button">
 					<i class="material-icons icon">visibility</i>
 					<span class="visually-hidden">Jelszó elrejtése</span>
 				</button>
-            }
+			}
 		</div>
 		@if (password.invalid && password.touched) {
 			@if (password.errors?.['required']) {
 				<div class="error">
 					<span class="material-icons">cancel</span>
-                    <span>Jelszót kötelező megadni!</span>
-                </div>
+					<span>Jelszót kötelező megadni!</span>
+				</div>
 			}
 		}
 
@@ -56,6 +56,6 @@
 				<span>{{ errorMessage() }}</span>
 			</div>
 		}
-	</form>
-	<p>Már van fiókod? <a routerLink="/register">Regisztrálj</a></p>
-</main>
+	</fieldset>
+</form>
+<p>Még nincs fiókod? <a routerLink="/register">Regisztrálj</a></p>

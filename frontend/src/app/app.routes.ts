@@ -1,7 +1,12 @@
 import { Routes } from '@angular/router';
 import { HomePage } from './features/home-page/home-page';
+import { Test } from './test/test';
 
 export const routes: Routes = [
+	{
+		path: "test",
+		component: Test
+	},
 	{
 		path: "recipe/:slug",
 		loadComponent: () => import("./features/recipe/recipe-detail/recipe-detail").then(m => m.RecipeDetail),

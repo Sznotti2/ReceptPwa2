@@ -17,11 +17,8 @@
 				</svg>
 				{{ title() }}
 			</h2>
-			<button class="icon-button" (click)="cancel.emit()">
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-					<path fill="none" d="M0 0h24v24H0z" />
-					<path fill="currentColor" d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z" />
-				</svg>
+			<button (click)="cancel.emit()">
+				<span class="material-icons icon">close</span>
 			</button>
 		</header>
 
@@ -29,10 +26,10 @@
 
 		<footer class="modal-container-footer">
 			@if (showCancelButton()) {
-				<button type="button" class="button is-ghost" (click)="cancel.emit()">Decline</button>
+				<button type="button" (click)="cancel.emit()">Decline</button>
 			}
 			@if (showConfirmButton()) {
-				<button type="button" class="button is-primary" (click)="confirm.emit()">Accept</button>
+				<button type="button" class="cta" (click)="confirm.emit()">Accept</button>
 			}
 		</footer>
 	</article>

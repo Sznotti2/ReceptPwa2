@@ -1,8 +1,9 @@
 import { computed, inject, Injectable, Signal, signal } from '@angular/core';
 import { Recipe } from '../models/recipe';
 import { environment } from '../../../../environments/enviorment.prod';
-import { catchError, map, Observable, of, throwError } from 'rxjs';
+import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, httpResource } from '@angular/common/http';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Injectable({
 	providedIn: 'root'
@@ -29,20 +30,16 @@ export class RecipeService {
 	addRecipe(recipe: Recipe): void {
 	}
 
-	getRecipeBySlug(slug: string): Signal<any> {
-		let fileRes = httpResource<any>(() => ({
-			url: `www.themealdb.com/api/json/v1/1/lookup.php?i=${slug}`,
-			method: 'GET',
-			responseType: 'json'
-		}));
+	getRecipeBySlug(slug: string): Signal<any | null> {
+		const url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${encodeURIComponent(slug)}`;
 
-		let recipe = computed(() => {
-			const res = fileRes.value();
-			if (!res?.meals) return [];
-			return res.meals;
-		});
-
-		return recipe;
+		return toSignal(
+			this.http
+				.get<{ meals: any[] }>(url)
+				.pipe(
+					map(res => res.meals[0] ?? null)
+				)
+		);
 	}
 
 	editRecipe(recipe: Recipe): void {

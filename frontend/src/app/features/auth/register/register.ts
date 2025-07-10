@@ -19,6 +19,7 @@ export class Register {
 
 	//TODO: get email from user after @
 	userEmail = signal<string>("gmail.com");
+	showRegisterForm = signal<boolean>(true);
 
 	registerForm: FormGroup;
 	verificationForm: FormGroup;
@@ -72,17 +73,15 @@ export class Register {
 					}
 				});
 		}
+		
+		this.showRegisterForm.set(false);
 
 		console.log("Register form submitted", this.registerForm.value);
 	}
 
 
-	showInfocard = true;
-	startVerification() {
-		this.showInfocard = true;
-	}
 	/** Ezt löki át a template minden input eventnél */
-	onInput(event: Event, nextInputId?: string) {
+	onInput(event: Event, nextInputId?: number) {
 		const input = event.target as HTMLInputElement;
 		// ha beírtál valamit, léptessünk
 		if (input.value && nextInputId) {
@@ -94,6 +93,9 @@ export class Register {
 		if (this.verificationForm.valid) {
 			this.onVerify();
 		}
+	}
+	onOtpKeydown(event: KeyboardEvent, inputId: number) {
+		const input = event.target as HTMLInputElement;
 	}
 	onPaste(event: ClipboardEvent) {
 		event.preventDefault();
@@ -121,7 +123,8 @@ export class Register {
 		}
 	}
 	onVerify() {
-		alert("Verification code sent to your email. Please check your inbox.");
+		// alert("Verification code sent to your email. Please check your inbox.");
+		this.showRegisterForm.set(true);
 	}
 
 

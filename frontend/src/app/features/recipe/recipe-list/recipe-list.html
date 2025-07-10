@@ -1,26 +1,26 @@
 <section>
-	@for (recipe of recipeResource(); track $index) {
-		<div class="recipe-card">
-			<img [src]="recipe.image" alt="{{ recipe.name }}">
-	
-			<div class="tags">
+	@for (recipe of recipes(); track $index) {
+		<div class="recipe-card" [routerLink]="[ '/recipe', recipe.id ]">
+			<h3>{{ recipe.name }}</h3>
+			<img [src]="recipe.image" [alt]="recipe.name" />
+			<div class="chips">
 				@for (tag of recipe.categories; track $index) {
-					<a class="chips link" href="#">{{ tag }}</a>
+					<li><a href="#">{{ tag }}</a></li>
 				}
+				<li><a href="#">Csokoládé</a></li>
+				<li><a href="#">Őszi</a></li>
 			</div>
-		
-			<h3 [routerLink]="[ '/recipe', recipe.id ]" class="title">{{ recipe.name }}</h3>
-		
-			<ul class="info">
-				<li>
-					<span>{{ recipe.servings }} adag</span>
-				</li>
-				<li>
-					<i class="material-icons favorite-icon">favorite_border</i>
-				</li>
-			</ul>
+			<div class="recipe-info">
+				<span>30 perc</span>
+				<span>{{ recipe.servings }} adag</span>
+				<span>Könnyű</span>
+				<span class="material-icons fav-icon">favorite</span>
+			</div>
 		</div>
 	} @empty {
-        <p>no recipes found</p>
-    }
+		<div class="error">
+			<span class="material-icons">error</span>
+			<span>No recipes found</span>
+		</div>
+	}
 </section>

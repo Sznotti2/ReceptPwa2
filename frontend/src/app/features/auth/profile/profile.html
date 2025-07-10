@@ -1,146 +1,132 @@
 <form [formGroup]="editForm" (ngSubmit)="onEdit()">
-	<h2 class="title">Profil szerkesztése</h2>
+	<fieldset>
+		<legend>Profil szerkesztése</legend>
 
-	<div class="form-group">
-		<input type="text" placeholder=" " formControlName="username">
-		<label>Felhasználónév</label>
-	</div>
+		<div class="form-group">
+			<input type="text" placeholder=" " formControlName="username">
+			<label>Felhasználónév</label>
+		</div>
 
-	<div class="form-group">
-		<textarea placeholder=" " formControlName="bio" rows="4"></textarea>
-		<label>Bio</label>
-	</div>
+		<div class="form-group">
+			<textarea placeholder=" " formControlName="bio" rows="4"></textarea>
+			<label>Bio</label>
+		</div>
 
-	<div class="form-group icon-input">
-		<input [type]="inputType()" placeholder=" " formControlName="password" [ngClass]="password.valid ? 'valid' : password.touched ? 'invalid' : ''">
-		<label>Jelszó</label>
-		@if (!passwordVisible()) {
-			<button (click)="revealPassword()" class="button" type="button">
-				<i class="material-icons icon">visibility_off</i>
-				<span class="visually-hidden">Jelszó felfedése</span>
-			</button>              
-		} @else {
-			<button (click)="revealPassword()" class="button" type="button">
-				<i class="material-icons icon">visibility</i>
-				<span class="visually-hidden">Jelszó elrejtése</span>
-			</button>
-		}
-	</div>
+		<div class="form-group icon-input">
+			<input [type]="inputType()" placeholder=" " formControlName="password" [ngClass]="password.valid ? 'valid' : password.touched ? 'invalid' : ''">
+			<label>Jelszó</label>
+			@if (!passwordVisible()) {
+				<button class="round" type="button" (click)="revealPassword()">
+					<i class="material-icons icon">visibility_off</i>
+					<span class="visually-hidden">Jelszó felfedése</span>
+				</button>              
+			} @else {
+				<button class="round" type="button" (click)="revealPassword()">
+					<i class="material-icons icon">visibility</i>
+					<span class="visually-hidden">Jelszó elrejtése</span>
+				</button>
+			}
+		</div>
 
-	<div class="image-upload">
-		<label for="profile-image">
-			<div class="label-content">
-				@if (imageSrc()) {
-					<img [src]="imageSrc()" alt="">
-				} @else {
-					<svg xmlns="http://www.w3.org/2000/svg" fill="none"
-						viewBox="0 0 24 24" stroke="currentColor">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-							d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-					</svg>
-					<p>Drag your image here or click in this area</p>
-				}
-			</div>
-		</label>
-		<input id="profile-image" type="file" accept="image/*" formControlName="image" (change)="onFileChange($event)">
-	</div>
+		<div class="image-upload">
+			<label for="profile-image">
+				<div class="label-content">
+					@if (imageSrc()) {
+						<img [src]="imageSrc()" alt="">
+					} @else {
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none"
+							viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+								d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+						</svg>
+						<p>Drag your image here or click in this area</p>
+					}
+				</div>
+			</label>
+			<input id="profile-image" type="file" accept="image/*" formControlName="image" (change)="onFileChange($event)">
+		</div>
 
-	<button [disabled]="editForm.invalid" type="submit">Módosítás</button>
-	<button class="warning" type="button" (click)="onDelete()">Fiók törlése</button>
-	<button type="button" (click)="startVerification()">Jelszó megváltoztatása</button>
+		<button class="cta" type="submit" [disabled]="editForm.invalid">Módosítás</button>
+		<button class="warning solid" type="button" (click)="onDelete()">Fiók törlése</button>
+		<button type="button" (click)="startVerification()">Jelszó megváltoztatása</button>
+	</fieldset>
 </form>
 
+
 @if (showInfocard) {
-	<form class="infocard" [formGroup]="verificationForm" (ngSubmit)="onVerify()">
-		<h2>Verification Code</h2>
-		<p>Enter the 6-digit code we've sent to your <a href="https://{{ userEmail() }}" target="_blank" rel="noopener noreferrer">mail</a></p>
-		<div class="inps">
-			<input
-				id="code1"
-				#code1
-				type="text"
-				formControlName="code1"
-				maxlength="1"
-				required
-				(input)="onInput($event,'code2')"
-			    (paste)="onPaste($event)"
-			/>
+	<form [formGroup]="verificationForm" (ngSubmit)="onVerify()">
+		<fieldset class="infocard">
+			<legend>Verification Code</legend>
+			
+			<p>Enter the 6-digit code we've sent to your <a href="https://{{ userEmail() }}" target="_blank" rel="noopener noreferrer">mail</a></p>
+			<div class="inps">
+				<input
+					type="text"
+					formControlName="code1"
+					required
+					(input)="onInput($event,'code2')"
+					(paste)="onPaste($event)"
+				/>
 
-			<input
-				id="code2"
-				#code2
-				type="text"
-				formControlName="code2"
-				maxlength="1"
-				required
-				(input)="onInput($event,'code3')"
-			    (paste)="onPaste($event)"
-			/>
+				<input
+					type="text"
+					formControlName="code2"
+					(input)="onInput($event,'code3')"
+					(paste)="onPaste($event)"
+				/>
 
-			<input
-				id="code3"
-				#code3
-				type="text"
-				formControlName="code3"
-				maxlength="1"
-				required
-				(input)="onInput($event,'code4')"
-			    (paste)="onPaste($event)"
-			/>
+				<input
+					type="text"
+					formControlName="code3"
+					(input)="onInput($event,'code4')"
+					(paste)="onPaste($event)"
+				/>
 
-			<input
-				id="code4"
-				#code4
-				type="text"
-				formControlName="code4"
-				maxlength="1"
-				required
-				(input)="onInput($event,'code5')"
-			    (paste)="onPaste($event)"
-			/>
+				<input
+					type="text"
+					formControlName="code4"
+					(input)="onInput($event,'code5')"
+					(paste)="onPaste($event)"
+				/>
 
-			<input
-				id="code5"
-				#code5
-				type="text"
-				formControlName="code5"
-				maxlength="1"
-				required
-				(input)="onInput($event,'code6')"
-			    (paste)="onPaste($event)"
-			/>
+				<input
+					type="text"
+					formControlName="code5"
+					(input)="onInput($event,'code6')"
+					(paste)="onPaste($event)"
+				/>
 
-			<input
-				id="code6"
-				#code6
-				type="text"
-				formControlName="code6"
-				maxlength="1"
-				required
-				(input)="onInput($event)"
-			    (paste)="onPaste($event)"
-			/>
-		</div>
-		<button class="cta" type="submit">Verify</button>
-		<button type="button">Go back to log in</button>
+				<input
+					type="text"
+					formControlName="code6"
+					(input)="onInput($event)"
+					(paste)="onPaste($event)"
+				/>
+			</div>
+			<button class="cta" type="submit">Verify</button>
+			<button type="button">Go back to log in</button>
+		</fieldset>
 	</form>
 }
 @if (showchangePassword) {
 	<form [formGroup]="changePasswordForm" (ngSubmit)="onChangePassword()">
-		<h2 class="title">Jelszó megváltoztatása</h2>
-		<div class="form-group">
-			<input type="password" placeholder=" " formControlName="currentPassword">
-			<label>Jelenlegi jelszó</label>
-		</div>
-		<div class="form-group">
-			<input type="password" placeholder=" " formControlName="newPassword">
-			<label>Új jelszó</label>
-		</div>
-		<div class="form-group">
-			<input type="password" placeholder=" " formControlName="confirmPassword">
-			<label>Új jelszó megerősítése</label>
-		</div>
-		<button class="cta" [disabled]="changePasswordForm.invalid" type="submit">Jelszó megváltoztatása</button>
+		<fieldset>
+			<legend>Jelszó megváltoztatása</legend>
+
+			<div class="form-group">
+				<input type="password" placeholder=" " formControlName="currentPassword">
+				<label>Jelenlegi jelszó</label>
+			</div>
+			<div class="form-group">
+				<input type="password" placeholder=" " formControlName="newPassword">
+				<label>Új jelszó</label>
+			</div>
+			<div class="form-group">
+				<input type="password" placeholder=" " formControlName="confirmPassword">
+				<label>Új jelszó megerősítése</label>
+			</div>
+			<button class="cta" [disabled]="changePasswordForm.invalid" type="submit">Jelszó megváltoztatása</button>
+		</fieldset>
 	</form>
 }
 

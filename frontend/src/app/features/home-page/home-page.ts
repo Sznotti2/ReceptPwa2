@@ -1,11 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { AuthService } from '../auth/services/auth.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home-page',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss'
 })
 export class HomePage {
+	user = inject(AuthService).user;
 
+	onMobile(): boolean {
+		return window.innerWidth <= 768;
+	}
+	onTablet(): boolean {
+		return window.innerWidth > 768 && window.innerWidth <= 1024;
+	}
 }
