@@ -1,25 +1,46 @@
 import { NgClass } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { DOCUMENT } from '@angular/common';
+import { animate, style, transition, trigger, query, group } from '@angular/animations';
 
 const hasOnlyLowercaseLetters = (control: AbstractControl): ValidationErrors | null => {
 	return /[A-Z]/.test(control.value) ? null : { hasOnlyLowercaseLetters: true };
 }
 @Component({
-  selector: 'app-register',
-  imports: [ReactiveFormsModule, RouterLink, NgClass],
-  templateUrl: './register.html',
-  styleUrl: './register.scss'
+	selector: 'app-register',
+	imports: [ReactiveFormsModule, NgClass],
+	templateUrl: './register.html',
+	styleUrl: './register.scss',
+	animations: [
+		trigger('paneChange', [
+			transition('* => *', [
+				query(':self', [
+					style({ height: '{{startHeight}}px' })
+				]),
+				query(':enter', [
+					style({ opacity: 0, scale: 0.9 })
+				]),
+				query(':leave', [
+					style({ opacity: 1, scale: 1 }),
+					animate('200ms ease-in-out', style({ opacity: 0, scale: 0.9 }))
+				]),
+				group([
+					query(':self', [
+						animate('200ms ease-in-out', style({ height: '*' }))
+					]),
+					query(':enter', [
+						animate('200ms ease-in-out', style({ opacity: 1, scale: 1 }))
+					])
+				])
+			], { params: { startHeight: 0 } })
+		])
+	]
 })
 export class Register {
-	router = inject(Router);
-	authService = inject(AuthService);
-
+	private document = inject(DOCUMENT);
 	//TODO: get email from user after @
-	userEmail = signal<string>("gmail.com");
-	showRegisterForm = signal<boolean>(true);
+	userEmail = signal("gmail.com");
 
 	registerForm: FormGroup;
 	verificationForm: FormGroup;
@@ -41,6 +62,7 @@ export class Register {
 		// 		validators: [Validators.requiredTrue],
 		// 	}]
 		// });
+
 		this.registerForm = this.formBuilder.group({
 			name: [""],
 			email: [""],
@@ -49,34 +71,32 @@ export class Register {
 			terms: [false]
 		});
 
-
 		this.verificationForm = this.formBuilder.group({
-			code1: ["", { validators: [Validators.required, Validators.minLength(1), Validators.maxLength(1)] }],
-			code2: ["", { validators: [Validators.required, Validators.minLength(1), Validators.maxLength(1)] }],
-			code3: ["", { validators: [Validators.required, Validators.minLength(1), Validators.maxLength(1)] }],
-			code4: ["", { validators: [Validators.required, Validators.minLength(1), Validators.maxLength(1)] }],
-			code5: ["", { validators: [Validators.required, Validators.minLength(1), Validators.maxLength(1)] }],
-			code6: ["", { validators: [Validators.required, Validators.minLength(1), Validators.maxLength(1)] }]
+			digit1: [""],
+			digit2: [""],
+			digit3: [""],
+			digit4: [""],
+			digit5: [""],
+			digit6: [""]
 		});
 	}
 
-	errorMessage = signal<string>("");
-	public register(): void {
+	errorMessage = signal("");
+	register(): void {
 		if (this.registerForm.valid) {
-			this.authService.register(this.registerForm.value)
-				.subscribe({
-					next: () => {
-						this.router.navigateByUrl("/login")
-					},
-					error: (error) => {
-						this.errorMessage = error.error.error;
-					}
-				});
+			this.toggle();
 		}
-		
-		this.showRegisterForm.set(false);
+	}
 
-		console.log("Register form submitted", this.registerForm.value);
+	verify() {
+		if (this.verificationForm.valid) {
+			this.toggle();
+		}
+	}
+
+	isRegisterForm = signal(true);
+	toggle() {
+		this.isRegisterForm.set(!this.isRegisterForm());
 	}
 
 
@@ -91,7 +111,7 @@ export class Register {
 
 		// ha minden mező valid, hívjuk a metódust
 		if (this.verificationForm.valid) {
-			this.onVerify();
+			this.verify();
 		}
 	}
 	onOtpKeydown(event: KeyboardEvent, inputId: number) {
@@ -105,28 +125,23 @@ export class Register {
 
 		// beállítjuk a formControl-okat
 		chars.forEach((ch, idx) => {
-		this.verificationForm.get(`code${idx + 1}`)?.setValue(ch);
+			this.verificationForm.get(`code${idx + 1}`)?.setValue(ch);
 		});
 		// töröljük a maradék mezőket, ha rövidebb volt a paste
 		for (let i = chars.length; i < 6; i++) {
-		this.verificationForm.get(`code${i + 1}`)?.setValue('');
+			this.verificationForm.get(`code${i + 1}`)?.setValue('');
 		}
 
 		// fókusz az utolsó beállított mező +1-re, vagy a hatodikra
 		const focusIdx = chars.length < 6 ? chars.length + 1 : 6;
-		const next: HTMLInputElement|null = document.querySelector(`#code${focusIdx}`);
+		const next: HTMLInputElement | null = document.querySelector(`#code${focusIdx}`);
 		if (next) next.focus();
 
 		// ha minden mező valid, hívjuk
 		if (this.verificationForm.valid) {
-		this.onVerify();
+			this.verify();
 		}
 	}
-	onVerify() {
-		// alert("Verification code sent to your email. Please check your inbox.");
-		this.showRegisterForm.set(true);
-	}
-
 
 	passwordVisible = signal(false);
 	inputType = signal("password");
