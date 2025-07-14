@@ -6,12 +6,37 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { NgClass } from '@angular/common';
 import { Modal } from '../../../shared/modal/modal';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { animate, style, transition, trigger, query, group } from '@angular/animations';
 
 @Component({
-  selector: 'app-profile',
-  imports: [ReactiveFormsModule, NgClass, Modal],
-  templateUrl: './profile.html',
-  styleUrl: './profile.scss'
+	selector: 'app-profile',
+	imports: [ReactiveFormsModule, NgClass, Modal],
+	templateUrl: './profile.html',
+	styleUrl: './profile.scss',
+	animations: [
+		trigger('paneChange', [
+			transition('* => *', [
+				query(':self', [
+					style({ height: '{{startHeight}}px' })
+				]),
+				query(':enter', [
+					style({ opacity: 0, scale: 0.9 })
+				]),
+				query(':leave', [
+					style({ opacity: 1, scale: 1 }),
+					animate('200ms ease-in-out', style({ opacity: 0, scale: 0.9 }))
+				]),
+				group([
+					query(':self', [
+						animate('200ms ease-in-out', style({ height: '*' }))
+					]),
+					query(':enter', [
+						animate('200ms ease-in-out', style({ opacity: 1, scale: 1 }))
+					])
+				])
+			], { params: { startHeight: 0 } })
+		])
+	]
 })
 export class Profile {
 	authService = inject(AuthService);
@@ -31,43 +56,44 @@ export class Profile {
 	changePasswordForm: FormGroup;
 	constructor(private formBuilder: FormBuilder, private sanitizer: DomSanitizer) {
 		this.editForm = this.formBuilder.group({
-			username: ["", { validators: [Validators.required] }],
+			username: [""],
 			bio: [""],
-			password: ["", { validators: [Validators.required] }],
+			password: [""],
 			image: [""],
 		});
 
 
 		this.verificationForm = this.formBuilder.group({
-			code1: ["", { validators: [Validators.required, Validators.minLength(1), Validators.maxLength(1)] }],
-			code2: ["", { validators: [Validators.required, Validators.minLength(1), Validators.maxLength(1)] }],
-			code3: ["", { validators: [Validators.required, Validators.minLength(1), Validators.maxLength(1)] }],
-			code4: ["", { validators: [Validators.required, Validators.minLength(1), Validators.maxLength(1)] }],
-			code5: ["", { validators: [Validators.required, Validators.minLength(1), Validators.maxLength(1)] }],
-			code6: ["", { validators: [Validators.required, Validators.minLength(1), Validators.maxLength(1)] }]
+			code1: [""],
+			code2: [""],
+			code3: [""],
+			code4: [""],
+			code5: [""],
+			code6: [""]
 		});
 
 
 		this.changePasswordForm = this.formBuilder.group({
-			currentPassword: ["", { validators: [Validators.required] }],
-			newPassword: ["", { validators: [Validators.required] }],
-			confirmPassword: ["", { validators: [Validators.required] }],
+			currentPassword: [""],
+			newPassword: [""],
+			confirmPassword: [""],
 		});
 
 		this.safeHtml = sanitizer.bypassSecurityTrustHtml(this.rawHtml);
 	}
 
-	ngOnInit(): void {
-		// Ha a felhasználó már be van jelentkezve, töltsd fel az űrlapot az adataival
-		// this.authService.user$.subscribe(user => {
-		// 	if (user) {
-		// 		this.editForm.patchValue({
-		// 			username: user.name || "",
-		// 			bio: user.bio || "",
-		// 		});
-		// 		this.imageSrc = user.profile_picture || "";
-		// 	}
-		// });
+	activeForm = signal<'profile' | 'verification' | 'changePassword'>('profile');
+	updateAccount() {
+		//TODO: implement update account logic
+	}
+	verifyOTP() {
+		this.activeForm.set('changePassword');
+	}
+	changePassword() {
+		this.activeForm.set('profile');
+	}
+	showForm(form: 'profile' | 'verification' | 'changePassword') {
+		this.activeForm.set(form);
 	}
 
 	/**
@@ -93,20 +119,13 @@ export class Profile {
 		}
 	}
 
-	public onEdit(): void {
-		if (this.editForm.valid) {
-			const form = this.editForm.value;
-		} else {
-			console.log("Invalid form");
-		}
-	}
 
 	rawHtml = `
 		<p>Biztosan törölni szeretnéd a fiókodat? Ez végleges.</p>
 	`;
 	safeHtml: SafeHtml;
 	showModal = false;
-	onDelete() {
+	showDeleteModal() {
 		this.showModal = true;
 	}
 	onModalConfirm() {
@@ -118,10 +137,6 @@ export class Profile {
 	}
 
 
-	showInfocard = true;
-	startVerification() {
-		this.showInfocard = true;
-	}
 	/** Ezt löki át a template minden input eventnél */
 	onInput(event: Event, nextInputId?: string) {
 		const input = event.target as HTMLInputElement;
@@ -133,7 +148,7 @@ export class Profile {
 
 		// ha minden mező valid, hívjuk a metódust
 		if (this.verificationForm.valid) {
-			this.onVerify();
+			this.verifyOTP();
 		}
 	}
 	onPaste(event: ClipboardEvent) {
@@ -144,30 +159,22 @@ export class Profile {
 
 		// beállítjuk a formControl-okat
 		chars.forEach((ch, idx) => {
-		this.verificationForm.get(`code${idx + 1}`)?.setValue(ch);
+			this.verificationForm.get(`code${idx + 1}`)?.setValue(ch);
 		});
 		// töröljük a maradék mezőket, ha rövidebb volt a paste
 		for (let i = chars.length; i < 6; i++) {
-		this.verificationForm.get(`code${i + 1}`)?.setValue('');
+			this.verificationForm.get(`code${i + 1}`)?.setValue('');
 		}
 
 		// fókusz az utolsó beállított mező +1-re, vagy a hatodikra
 		const focusIdx = chars.length < 6 ? chars.length + 1 : 6;
-		const next: HTMLInputElement|null = document.querySelector(`#code${focusIdx}`);
+		const next: HTMLInputElement | null = document.querySelector(`#code${focusIdx}`);
 		if (next) next.focus();
 
 		// ha minden mező valid, hívjuk
 		if (this.verificationForm.valid) {
-		this.onVerify();
+			this.verifyOTP();
 		}
-	}
-	onVerify() {
-		alert("Verification code sent to your email. Please check your inbox.");
-	}
-
-	showchangePassword = true;
-	onChangePassword() {
-		this.showInfocard = true;
 	}
 
 	passwordVisible = signal(false);

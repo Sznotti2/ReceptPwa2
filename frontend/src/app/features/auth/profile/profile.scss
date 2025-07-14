@@ -1,9 +1,24 @@
-.infocard {
-	text-align: center;
-
-	.inps {
+.image-upload {
+	label {
+		padding: .5rem;
 		display: flex;
-		gap: 1rem;
-		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		gap: .5rem;
+		border: 2px dashed black;
+		cursor: pointer;
+
+		svg {
+			max-width: 40px;
+		}
+
+		img {
+			object-fit: cover;
+			max-height: 18rem;
+		}
+	}
+
+	input {
+		display: none;
 	}
 }
