@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, forwardRef, HostListener, input, signal, output } from '@angular/core';
+import { Component, ElementRef, forwardRef, HostListener, input, signal, output, ChangeDetectionStrategy } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -7,6 +7,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 	imports: [CommonModule],
 	templateUrl: './dropdown-select.html',
 	styleUrl: './dropdown-select.scss',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [
 		{
 			provide: NG_VALUE_ACCESSOR,

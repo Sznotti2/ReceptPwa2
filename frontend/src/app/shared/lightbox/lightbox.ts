@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
@@ -6,6 +6,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 	imports: [],
 	templateUrl: './lightbox.html',
 	styleUrl: './lightbox.scss',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	animations: [
 		trigger('fade', [
 			transition(':enter', [style({ opacity: 0 }), animate('200ms', style({ opacity: 1 }))]),

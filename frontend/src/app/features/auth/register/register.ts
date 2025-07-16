@@ -1,47 +1,55 @@
-import { NgClass } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
 import { animate, style, transition, trigger, query, group } from '@angular/animations';
+import { Router, RouterLink } from '@angular/router';
 
 const hasOnlyLowercaseLetters = (control: AbstractControl): ValidationErrors | null => {
 	return /[A-Z]/.test(control.value) ? null : { hasOnlyLowercaseLetters: true };
 }
+
 @Component({
 	selector: 'app-register',
-	imports: [ReactiveFormsModule, NgClass],
+	imports: [ReactiveFormsModule, RouterLink],
 	templateUrl: './register.html',
 	styleUrl: './register.scss',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	animations: [
 		trigger('paneChange', [
+			transition('* => void', []), // No animation when leaving page
+			transition('void => *', []), // No animation when entering page
 			transition('* => *', [
 				query(':self', [
 					style({ height: '{{startHeight}}px' })
 				]),
 				query(':enter', [
 					style({ opacity: 0, scale: 0.9 })
-				]),
+				], { optional: true }),
 				query(':leave', [
 					style({ opacity: 1, scale: 1 }),
-					animate('200ms ease-in-out', style({ opacity: 0, scale: 0.9 }))
-				]),
+					animate('0.2s ease-in-out', style({ opacity: 0, scale: 0.9 }))
+				], { optional: true }),
 				group([
 					query(':self', [
-						animate('200ms ease-in-out', style({ height: '*' }))
+						animate('0.2s ease-in-out', style({ height: '*' }))
 					]),
 					query(':enter', [
-						animate('200ms ease-in-out', style({ opacity: 1, scale: 1 }))
-					])
-				])
-			], { params: { startHeight: 0 } })
+						animate('0.2s ease-in-out', style({ opacity: 1, scale: 1 }))
+					], { optional: true }),
+				], { params: { startHeight: 0 } })
+			])
 		])
 	]
 })
 export class Register {
 	private document = inject(DOCUMENT);
-	//TODO: get email from user after @
-	userEmail = signal("gmail.com");
+	private router = inject(Router);
 
+	animationDisabled = signal(true);
+	isRegisterForm = signal(true);
+	
+	userEmail = signal("gmail.com"); //TODO: get email from user after @
+	errorMessage = signal("");
 	registerForm: FormGroup;
 	verificationForm: FormGroup;
 	constructor(private formBuilder: FormBuilder) {
@@ -67,7 +75,6 @@ export class Register {
 			name: [""],
 			email: [""],
 			password: [""],
-			password2: [""],
 			terms: [false]
 		});
 
@@ -81,7 +88,6 @@ export class Register {
 		});
 	}
 
-	errorMessage = signal("");
 	register(): void {
 		if (this.registerForm.valid) {
 			this.toggle();
@@ -94,7 +100,6 @@ export class Register {
 		}
 	}
 
-	isRegisterForm = signal(true);
 	toggle() {
 		this.isRegisterForm.set(!this.isRegisterForm());
 	}

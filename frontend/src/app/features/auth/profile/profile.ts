@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, signal } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { User } from '../models/user';
@@ -13,28 +13,31 @@ import { animate, style, transition, trigger, query, group } from '@angular/anim
 	imports: [ReactiveFormsModule, NgClass, Modal],
 	templateUrl: './profile.html',
 	styleUrl: './profile.scss',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	animations: [
 		trigger('paneChange', [
+			transition('* => void', []), // No animation when leaving page
+			transition('void => *', []), // No animation when entering page
 			transition('* => *', [
 				query(':self', [
 					style({ height: '{{startHeight}}px' })
 				]),
 				query(':enter', [
 					style({ opacity: 0, scale: 0.9 })
-				]),
+				], { optional: true }),
 				query(':leave', [
 					style({ opacity: 1, scale: 1 }),
-					animate('200ms ease-in-out', style({ opacity: 0, scale: 0.9 }))
-				]),
+					animate('0.2s ease-in-out', style({ opacity: 0, scale: 0.9 }))
+				], { optional: true }),
 				group([
 					query(':self', [
-						animate('200ms ease-in-out', style({ height: '*' }))
+						animate('0.2s ease-in-out', style({ height: '*' }))
 					]),
 					query(':enter', [
-						animate('200ms ease-in-out', style({ opacity: 1, scale: 1 }))
-					])
-				])
-			], { params: { startHeight: 0 } })
+						animate('0.2s ease-in-out', style({ opacity: 1, scale: 1 }))
+					], { optional: true }),
+				], { params: { startHeight: 0 } })
+			])
 		])
 	]
 })
@@ -42,24 +45,26 @@ export class Profile {
 	authService = inject(AuthService);
 	cd = inject(ChangeDetectorRef);
 	private router = inject(Router);
+	formBuilder = inject(FormBuilder);
+	sanitizer = inject(DomSanitizer);
 
 	// imgbb = inject(ImgbbService);
 	imageSrc = signal<string>("");
 	selectedImage = signal<File | null>(null); // ez lesz elküldve az imgbb-nek
 
-	//TODO: get email from user after @
-	userEmail = signal<string>("gmail.com");
-
+	activeForm = signal<'profile' | 'verification' | 'changePassword'>('profile');
+	
+	userEmail = signal<string>("gmail.com"); //TODO: get email from user after @
 	user!: User;
 	editForm: FormGroup;
 	verificationForm: FormGroup;
 	changePasswordForm: FormGroup;
-	constructor(private formBuilder: FormBuilder, private sanitizer: DomSanitizer) {
+	constructor() {
 		this.editForm = this.formBuilder.group({
 			username: [""],
 			bio: [""],
 			password: [""],
-			image: [""],
+			image: [""]
 		});
 
 
@@ -75,14 +80,12 @@ export class Profile {
 
 		this.changePasswordForm = this.formBuilder.group({
 			currentPassword: [""],
-			newPassword: [""],
-			confirmPassword: [""],
+			newPassword: [""]
 		});
 
-		this.safeHtml = sanitizer.bypassSecurityTrustHtml(this.rawHtml);
+		this.safeHtml = this.sanitizer.bypassSecurityTrustHtml(this.rawHtml);
 	}
 
-	activeForm = signal<'profile' | 'verification' | 'changePassword'>('profile');
 	updateAccount() {
 		//TODO: implement update account logic
 	}

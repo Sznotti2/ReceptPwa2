@@ -1,11 +1,12 @@
-import { Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 
 @Component({
 	selector: 'app-modal',
 	imports: [],
 	templateUrl: './modal.html',
-	styleUrl: './modal.scss'
+	styleUrl: './modal.scss',
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Modal {
 	// @Input() title = 'Megerősítés';

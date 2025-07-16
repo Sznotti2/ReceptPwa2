@@ -89,35 +89,10 @@
 }
 
 
-
-<section class="comment-thread">
-	<h3>Komment Szekció</h3>
-	<!-- Comment 1 start -->
-	<div class="comment" id="comment-1">
-		<div class="comment-info">
-			<span class="author">someguy14</span>
-			<p class="time">4 days ago</p>
-		</div>
-		<p>This is really great! I fully agree with what you wrote, and this is sure to help me out in the future. Thank you for posting this.</p>
-		<button class="reply-btn" type="button">Reply</button>
-		<div class="line"></div>
-
-		<div class="replies">
-			<!-- Comment 2 start -->
-			<div class="comment" id="comment-2">
-				<div class="comment-info">
-					<span class="author">randomperson81</span>
-					<p class="time">3 days ago</p>
-				</div>
-				<p>Took the words right out of my mouth!</p>
-				<button class="reply-btn" type="button">Reply</button>
-				<div class="line"></div>
-			</div>
-			<!-- Comment 2 end -->
-
-		</div>
+@defer (on viewport; prefetch on idle) {
+	<app-comments />
+} @placeholder {
+	<div class="loading-placeholder">
+		<p>Betöltés...</p>
 	</div>
-	<!-- Comment 1 end -->
-
-	<a href="#load-more">Többi hozzászólás betöltése</a>
-</section>
+}

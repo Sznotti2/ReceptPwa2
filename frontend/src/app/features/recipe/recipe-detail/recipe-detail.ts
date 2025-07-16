@@ -1,14 +1,15 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Recipe } from '../models/recipe';
 import { RecipeService } from '../services/recipe-service';
-import { Lightbox } from "../../../shared/lightbox/lightbox";
+import { CommentsComponent } from '../../../shared/comments/comments';
 
 @Component({
-  selector: 'app-recipe-detail',
-  imports: [Lightbox],
-  templateUrl: './recipe-detail.html',
-  styleUrl: './recipe-detail.scss'
+	selector: 'app-recipe-detail',
+	imports: [CommentsComponent],
+	templateUrl: './recipe-detail.html',
+	styleUrl: './recipe-detail.scss',
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RecipeDetail {
 	route = inject(ActivatedRoute);

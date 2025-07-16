@@ -1,14 +1,14 @@
-import { Component, inject, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-login',
-  imports: [ReactiveFormsModule, RouterLink, NgClass],
-  templateUrl: './login.html',
-  styleUrl: './login.scss'
+	selector: 'app-login',
+	imports: [ReactiveFormsModule, RouterLink],
+	templateUrl: './login.html',
+	styleUrl: './login.scss',
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Login {
 	private router = inject(Router);
@@ -23,7 +23,7 @@ export class Login {
 	}
 
 	errorMessage = signal<string | null>(null);
-	public login(): void {
+	public login() {
 		// if (this.loginForm.valid) {
 		// 	const form = this.loginForm.value;
 		// 	this.authService.login(form.email, form.password)

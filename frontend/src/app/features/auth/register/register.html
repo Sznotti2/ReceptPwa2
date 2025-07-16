@@ -1,100 +1,174 @@
+<fieldset
+	#formContainer
+	[@paneChange]="{ 
+		value: isRegisterForm(),
+		params: { startHeight: formContainer.clientHeight}
+	}">
 
-
-<fieldset>
 	<legend>{{ isRegisterForm() ? 'Regisztráció' : 'Hitelesítés' }}</legend>
 
-	<div 
-		#formContainer
-		[@paneChange]="{ 
-			value: isRegisterForm(),
-			params: { startHeight: formContainer.clientHeight}
-		}">
+	@if (isRegisterForm()) {
+		
+		<form [formGroup]="registerForm" (ngSubmit)="register()">
+			<div class="form-group">
+				<input id="name" type="text" placeholder="" formControlName="name">
+				<label for="name">Felhasználónév</label>
+			</div>
+			@if (name.invalid && name.touched) {
+				@if ( name.errors?.['required'] ) {
+					<div class="error">
+						<span class="material-icons">cancel</span>
+						<span>A felhasználó nevet meg kell adni!</span>	
+					</div>
+				}
+				@if ( name.hasError("minlength") ) {
+					<div class="error">
+						<span class="material-icons">cancel</span>
+						<span>A felhasználó név minimum 3 karakter kell, hogy legyen!</span>
+					</div>
+				}
+				@if ( name.hasError("maxlength") ) {
+					<div class="error">
+						<span class="material-icons">cancel</span>
+						<span>A felhasználó név maximum 32 karakterből állhat!</span>
+					</div>
+				}
+			}
 
-		@if (isRegisterForm()) {
-			
-			<form [formGroup]="registerForm" (ngSubmit)="register()">
-				<div class="form-group">
-					<input type="text" placeholder="" formControlName="name">
-					<label>Felhasználónév</label>
+			<div class="form-group">
+				<input id="email" type="email" placeholder="" formControlName="email">
+				<label for="email">Email cím</label>
+			</div>
+			@if (email.invalid && email.touched) {
+				@if (email.errors?.['required']) {
+					<div class="error">
+						<span class="material-icons">cancel</span>
+						<span>Az email címet meg kell adni!</span>
+					</div>
+				}
+				@if (email.hasError("email") ) {
+					<div class="error">	
+						<span class="material-icons">cancel</span>
+						<span>Helytelen email formátum!</span>
+					</div>
+				}
+			}
+
+			<div class="form-group icon-input">
+				<input id="password" [type]="inputType()" placeholder="" formControlName="password">
+				<label for="password">Jelszó</label>
+				<button (click)="revealPassword()" type="button">
+					<i class="material-icons icon">{{ passwordVisible() ? 'visibility' : 'visibility_off' }}</i>
+				</button>
+			</div>
+			@if (password.invalid && password.touched) {
+				@if (password.errors?.['required']) {
+					<div class="error">
+						<span class="material-icons">cancel</span>
+						<span>Jelszót kötelező megadni!</span>
+					</div>
+				}
+				@if ( password.hasError("minlength") ) {
+					<div class="error">
+						<span class="material-icons">cancel</span>
+						<span>A jelszó minimum 6 karakter kell hogy legyen!</span>
+					</div>
+				}
+				@if ( password.hasError("maxlength") ) {
+					<div class="error">
+						<span class="material-icons">cancel</span>
+						<span>A jelszó maximum 32 karakterből állhat!</span>
+					</div>
+				}
+				@if ( password.hasError("hasOnlyLowercaseLetters") ) {
+					<div class="error">
+						<span class="material-icons">cancel</span>
+						<span>Legalább 1 nagybetűt meg kell adni!</span>
+					</div>
+				}
+			}
+
+			<div>
+				<input id="terms" class="checkbox" type="checkbox" aria-hidden="true" formControlName="terms" >
+				<label for="terms">Elfogadom az <a routerLink="/terms">Adatkezelési tájékoztatóban</a> foglaltakat</label>
+			</div>
+			@if (terms.invalid && terms.touched) {
+				@if (terms.errors?.['requiredTrue']) {
+					<div class="error">
+						<span class="material-icons-outlined">cancel</span>
+						<span>Adatkezelési tájékoztatóban foglaltakat el kell fogadni!</span>
+					</div>
+				}
+			}
+
+			<div class="row">
+				<div>
+					<input id="keep-logged-in" class="checkbox" type="checkbox" aria-hidden="true" formControlName="terms">
+					<label for="keep-logged-in">Emlékezz rám</label>
 				</div>
+			</div>
 
-				<div class="form-group">
-					<input type="email" placeholder="" formControlName="email">
-					<label>Email cím</label>
+			<button [disabled]="registerForm.invalid" class="cta" type="submit">Register</button>
+			@if (errorMessage()) {
+				<div class="error">
+					<span class="material-icons-outlined">cancel</span>
+					<span>{{ errorMessage() }}</span>
 				</div>
+			}
+		</form>
 
-				<div class="form-group icon-input">
-					<input [type]="inputType()" placeholder="" formControlName="password">
-					<label>Jelszó</label>
-					@if (!passwordVisible()) {
-						<button (click)="revealPassword()" type="button">
-							<i class="material-icons icon">visibility_off</i>
-							<span class="visually-hidden">Jelszó felfedése</span>
-						</button>              
-					} @else {
-						<button (click)="revealPassword()" type="button">
-							<i class="material-icons icon">visibility</i>
-							<span class="visually-hidden">Jelszó elrejtése</span>
-						</button>
-					}
-				</div>
+	} @else {
 
-				<button class="cta" type="submit">Register</button>
-			</form>
-			
-		} @else {
+		<form [formGroup]="verificationForm" (ngSubmit)="verify()">
+			<p>Enter the 6-digit code we've sent to your <a href="https://{{ userEmail() }}" target="_blank" rel="noopener noreferrer">mail</a></p>
+			<div class="otp-inputs">
+				<input 
+					type="text" 
+					formControlName="digit1" 
+					maxlength="1"
+					(input)="onInput($event, 1)"
+					(keydown)="onOtpKeydown($event, 1)"
+					#input1>
+				<input 
+					type="text" 
+					formControlName="digit2" 
+					maxlength="1"
+					(input)="onInput($event, 2)"
+					(keydown)="onOtpKeydown($event, 2)"
+					#input2>
+				<input 
+					type="text" 
+					formControlName="digit3" 
+					maxlength="1"
+					(input)="onInput($event, 3)"
+					(keydown)="onOtpKeydown($event, 3)"
+					#input3>
+				<input 
+					type="text" 
+					formControlName="digit4" 
+					maxlength="1"
+					(input)="onInput($event, 4)"
+					(keydown)="onOtpKeydown($event, 4)"
+					#input4>
+				<input 
+					type="text" 
+					formControlName="digit5" 
+					maxlength="1"
+					(input)="onInput($event, 5)"
+					(keydown)="onOtpKeydown($event, 5)"
+					#input5>
+				<input 
+					type="text" 
+					formControlName="digit6" 
+					maxlength="1"
+					(input)="onInput($event, 6)"
+					(keydown)="onOtpKeydown($event, 6)"
+					#input6>
+			</div>
 
-			<form [formGroup]="verificationForm" (ngSubmit)="verify()">
-				<p>Enter the 6-digit code we've sent to your <a href="https://{{ userEmail() }}" target="_blank" rel="noopener noreferrer">mail</a></p>
-				<div class="otp-inputs">
-					<input 
-						type="text" 
-						formControlName="digit1" 
-						maxlength="1"
-						(input)="onInput($event, 1)"
-						(keydown)="onOtpKeydown($event, 1)"
-						#input1>
-					<input 
-						type="text" 
-						formControlName="digit2" 
-						maxlength="1"
-						(input)="onInput($event, 2)"
-						(keydown)="onOtpKeydown($event, 2)"
-						#input2>
-					<input 
-						type="text" 
-						formControlName="digit3" 
-						maxlength="1"
-						(input)="onInput($event, 3)"
-						(keydown)="onOtpKeydown($event, 3)"
-						#input3>
-					<input 
-						type="text" 
-						formControlName="digit4" 
-						maxlength="1"
-						(input)="onInput($event, 4)"
-						(keydown)="onOtpKeydown($event, 4)"
-						#input4>
-					<input 
-						type="text" 
-						formControlName="digit5" 
-						maxlength="1"
-						(input)="onInput($event, 5)"
-						(keydown)="onOtpKeydown($event, 5)"
-						#input5>
-					<input 
-						type="text" 
-						formControlName="digit6" 
-						maxlength="1"
-						(input)="onInput($event, 6)"
-						(keydown)="onOtpKeydown($event, 6)"
-						#input6>
-				</div>
-
-				<button class="cta" type="submit">Verify</button>
-			</form>
-			
-		}
-	</div>
+			<button class="cta" type="submit">Verify</button>
+		</form>
+		
+	}
 
 </fieldset>

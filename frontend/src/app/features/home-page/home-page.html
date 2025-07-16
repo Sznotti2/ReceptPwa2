@@ -1,7 +1,4 @@
-<!-- https://dribbble.com/shots/24164026-NomNom-Recipe-App -->
- <!-- https://dribbble.com/shots/21365759-Food-Recipe-Landing-Page-Design -->
-
-<section style="border: 1px solid black;">
+<!-- <section style="border: 1px solid black;">
 	<button>Button</button>
 	<button class="outlined">Outlined</button>
 	<button class="solid">Solid</button>
@@ -47,23 +44,22 @@
 		<i class="material-icons icon">add</i>
 	</button>
 
-	<button class="loading">
-		<div class="loader"></div>
+	<button (click)="startLoading($event)">
+		Click me
 	</button>
-	<button class="loading outlined">
-		<div class="loader"></div>
+	<button class="outlined" (click)="startLoading($event)">
+		Click me
 	</button>
-	<button class="loading solid">
-		<div class="loader"></div>
+	<button class="solid" (click)="startLoading($event)">
+		Click me
 	</button>
-	<button class="loading round">
-		<div class="loader"></div>
+	<button class="round" (click)="startLoading($event)">
+		Click me
 	</button>
-	<button class="loading" disabled>
-		<div class="loader"></div>
+	<button disabled (click)="startLoading($event)">
+		Click me
 	</button>
-
-</section>
+</section> -->
 
 
 <section>
@@ -115,7 +111,7 @@
 		<div class="slider">
 			<div class="recipe-card" [routerLink]="['/recipe', 1]">
 				<h3>Recept címe</h3>
-				<img src="https://picsum.photos/200/300?random=1" alt="Kép 2" />
+				<img src="https://picsum.photos/200/300?random=1" loading="lazy" alt="Kép 2" />
 				<div class="recipe-info">
 					<span>30 perc</span>
 					<span>Könnyű</span>
@@ -128,7 +124,7 @@
 
 			<div class="recipe-card" [routerLink]="['/recipe', 1]">
 				<h3>Fekete-erdő torta ropogós kekszréteggel</h3>
-				<img src="https://picsum.photos/200/300?random=2" alt="Kép 2" />
+				<img src="https://picsum.photos/200/300?random=2" loading="lazy" alt="Kép 2" />
 				<div class="chips">
 					<li><a href="#">Torta</a></li>
 					<li><a href="#">Csokoládé</a></li>
@@ -145,7 +141,7 @@
 
 			<div class="recipe-card" [routerLink]="['/recipe', 1]">
 				<h3>Oroszkrémtorta</h3>
-				<img src="https://picsum.photos/200/300?random=2" alt="Kép 2" />
+				<img src="https://picsum.photos/200/300?random=2" loading="lazy" alt="Kép 2" />
 				<div class="chips">
 					<li><a href="#">Torta</a></li>
 					<li><a href="#">Csokoládé</a></li>
@@ -168,24 +164,24 @@
 	</div>
 	<div class="blog-list">
 		<div class="blog-card">
-			<img src="https://picsum.photos/200/300?random=3" alt="Kép 3" />
+			<img src="https://picsum.photos/200/300?random=3" loading="lazy" alt="Kép 3" />
 			<h3>Blog címe</h3>
 			<p>Blog rövid leírás. Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio temporibus dolores odit sequi sit placeat repudiandae?</p>
 		</div>
 
 
 		<div class="blog-card">
-			<img src="https://picsum.photos/200/300?random=3" alt="Kép 3" />
+			<img src="https://picsum.photos/200/300?random=3" loading="lazy" alt="Kép 3" />
 			<h3>Blog címe</h3>
 			<p>Blog rövid leírás. Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio temporibus dolores odit sequi sit placeat repudiandae?</p>
 		</div>
 		<div class="blog-card">
-			<img src="https://picsum.photos/200/300?random=3" alt="Kép 3" />
+			<img src="https://picsum.photos/200/300?random=3" loading="lazy" alt="Kép 3" />
 			<h3>Blog címe</h3>
 			<p>Blog rövid leírás. Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio temporibus dolores odit sequi sit placeat repudiandae?</p>
 		</div>
 		<div class="blog-card">
-			<img src="https://picsum.photos/200/300?random=3" alt="Kép 3" />
+			<img src="https://picsum.photos/200/300?random=3" loading="lazy" alt="Kép 3" />
 			<h3>Blog címe</h3>
 			<p>Blog rövid leírás. Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio temporibus dolores odit sequi sit placeat repudiandae?</p>
 		</div>

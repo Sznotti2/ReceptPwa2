@@ -1,10 +1,10 @@
-<form [formGroup]="loginForm" (ngSubmit)="login()">
-	<fieldset>
-		<legend>Bejelentkezés</legend>
+<fieldset>
+	<legend>Bejelentkezés</legend>
+	<form [formGroup]="loginForm" (ngSubmit)="login()">
 
 		<div class="form-group">
-			<input type="text" placeholder="" formControlName="email">
-			<label>Email vagy felhasználónév</label>
+			<input id="email" type="text" placeholder="" formControlName="email">
+			<label for="email">Email vagy felhasználónév</label>
 		</div>
 		
 		@if (email.invalid && email.touched) {
@@ -17,19 +17,11 @@
 		}
 
 		<div class="form-group icon-input">
-			<input [type]="inputType()" placeholder="" formControlName="password" [ngClass]="password.valid ? 'valid' : password.touched ? 'invalid' : ''" >
-			<label>Jelszó</label>
-			@if (!passwordVisible()) {
-				<button (click)="revealPassword()" type="button">
-					<i class="material-icons icon">visibility_off</i>
-					<span class="visually-hidden">Jelszó felfedése</span>
-				</button>              
-			} @else {
-				<button (click)="revealPassword()" type="button">
-					<i class="material-icons icon">visibility</i>
-					<span class="visually-hidden">Jelszó elrejtése</span>
-				</button>
-			}
+			<input id="password" [type]="inputType()" placeholder="" formControlName="password">
+			<label for="password">Jelszó</label>
+			<button (click)="revealPassword()" type="button">
+				<i class="material-icons icon">{{ passwordVisible() ? 'visibility' : 'visibility_off' }}</i>
+			</button>
 		</div>
 		@if (password.invalid && password.touched) {
 			@if (password.errors?.['required']) {
@@ -56,6 +48,6 @@
 				<span>{{ errorMessage() }}</span>
 			</div>
 		}
-	</fieldset>
-</form>
+	</form>
+</fieldset>
 <p>Még nincs fiókod? <a routerLink="/register">Regisztrálj</a></p>

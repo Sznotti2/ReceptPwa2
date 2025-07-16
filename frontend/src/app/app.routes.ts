@@ -1,6 +1,13 @@
 import { Routes } from '@angular/router';
 import { HomePage } from './features/home-page/home-page';
 import { Test } from './test/test';
+import { AboutPage } from './features/about-page/about-page';
+import { Login } from './features/auth/login/login';
+import { Register } from './features/auth/register/register';
+import { Profile } from './features/auth/profile/profile';
+import { NotFound } from './features/not-found/not-found';
+import { RecipePage } from './features/recipe/recipe-page/recipe-page';
+import { BlogPage } from './features/blog/blog-page/blog-page';
 
 export const routes: Routes = [
 	{
@@ -14,8 +21,8 @@ export const routes: Routes = [
 	},
 	{
 		path: "recipe",
-		loadComponent: () => import("./features/recipe/recipe-page/recipe-page").then(m => m.RecipePage),
-		title: "Receptek"
+		title: "Receptek",
+		component: RecipePage
 	},
 	{
 		path: "blog/:slug",
@@ -24,28 +31,28 @@ export const routes: Routes = [
 	},
 	{
 		path: "blog",
-		loadComponent: () => import("./features/blog/blog-page/blog-page").then(m => m.BlogPage),
-		title: "Blog"
+		title: "Blog",
+		component: BlogPage
 	},
 	{
 		path: "about",
-		loadComponent: () => import("./features/about-page/about-page").then(m => m.AboutPage),
-		title: "Rólunk"
+		title: "Rólunk",
+		component: AboutPage
 	},
 	{
 		path: "login",
-		loadComponent: () => import("./features/auth/login/login").then(m => m.Login),
-		title: "Bejelentkezés"
+		title: "Bejelentkezés",
+		component: Login
 	},
 	{
 		path: "register",
-		loadComponent: () => import("./features/auth/register/register").then(m => m.Register),
-		title: "Regisztráció"
+		title: "Regisztráció",
+		component: Register
 	},
 	{
 		path: "profile",
-		loadComponent: () => import("./features/auth/profile/profile").then(m => m.Profile),
-		title: "Profil"
+		title: "Profil",
+		component: Profile
 	},
 	{
 		path: "",
@@ -54,7 +61,7 @@ export const routes: Routes = [
 	},
 	{
 		path: "**",
-		loadComponent: () => import("./features/not-found/not-found").then(m => m.NotFound),
-		title: "404 - A keresett oldal nem található"
+		title: "404 - A keresett oldal nem található",
+		component: NotFound
 	}
 ];
