@@ -3,14 +3,13 @@ import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { User } from '../models/user';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgClass } from '@angular/common';
 import { Modal } from '../../../shared/modal/modal';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { animate, style, transition, trigger, query, group } from '@angular/animations';
 
 @Component({
 	selector: 'app-profile',
-	imports: [ReactiveFormsModule, NgClass, Modal],
+	imports: [ReactiveFormsModule, Modal],
 	templateUrl: './profile.html',
 	styleUrl: './profile.scss',
 	changeDetection: ChangeDetectionStrategy.OnPush,

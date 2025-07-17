@@ -943,18 +943,18 @@ input[type="search"] {
 		list-style: none;
 		display: inline-flex;
 		align-items: center;
-		background-color: hsl(var(--primary-hs), var(--lightness-900));
 		border: 2px solid hsl(var(--primary-hs), var(--lightness-100));
 		border-radius: 9999px;
 		overflow: hidden;
 
 		&:has(a:hover),
 		&:has(.icon:hover) {
-			background-color: hsl(var(--primary-hs), var(--lightness-800));
+			background-color: hsl(var(--primary-hs), var(--lightness-900));
 		}
 
 		&:has(a:active) {
-			background-color: hsl(var(--primary-hs), var(--lightness-700));
+			// background-color: hsl(var(--primary-hs), var(--lightness-700));
+			transform: translate3d(0, 0.1rem, 0);
 		}
 
 		&:has(a:focus-visible) {
