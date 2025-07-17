@@ -1,7 +1,59 @@
 <aside class="filter-container">
-    <search class="form-group">
-		<input type="search" placeholder="" (input)="onSearch($event)">
-	</search>
+
+	<div class="row">
+		<search class="form-group">
+			<input type="search" placeholder="" (input)="onSearch($event)">
+		</search>
+
+		<button type="button" title="Szűrés" (click)="toggleFilterPanel()">
+			<i class="material-icons icon">filter_alt</i>
+		</button>
+
+		<app-dropdown-select 
+			[placeholder]="'Rendezés'"
+			[options]="selectOptions()"></app-dropdown-select>
+	</div>
+
+	<div class="filter-panel" [class.show]="showFilterPanel()">
+		<div class="container">
+
+			<div>
+				<h4>Évszak</h4>
+				<ul class="toggle-pills">
+					<li class="active"><span>Tavasz</span></li>
+					<li><span>Nyár</span></li>
+					<li><span>Ősz</span></li>
+					<li><span>Tél</span></li>
+				</ul>
+			</div>
+
+			<div>
+				<h4>Étrend</h4>
+				<ul class="toggle-pills">
+					<li class="active"><span>Vegetáriánus</span></li>
+					<li><span>Vegán</span></li>
+					<li><span>Gluténmentes</span></li>
+					<li><span>Laktózmentes</span></li>
+				</ul>
+			</div>
+
+			<div>
+				<h4>Összetevők</h4>
+				<ul class="toggle-pills">
+					<li class="active"><span>Cukor</span></li>
+					<li><span>Liszt</span></li>
+					<li><span>Tojás</span></li>
+					<li><span>Tej</span></li>
+					<li><span>Csokoládé</span></li>
+					<li><span>Gyümölcs</span></li>
+					<li><span>Zöldség</span></li>
+					<li><span>Eper</span></li>
+					<li><span>Banán</span></li>
+				</ul>
+			</div>
+
+		</div>
+	</div>
 </aside>
 
 <section>

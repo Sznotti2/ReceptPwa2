@@ -3,18 +3,18 @@ import { RecipeService } from '../services/recipe-service';
 import { httpResource } from '@angular/common/http';
 import { Recipe } from '../models/recipe';
 import { RecipeList } from '../recipe-list/recipe-list';
+import { DropdownSelect } from "../../../shared/dropdown-select/dropdown-select";
 
 @Component({
 	selector: 'app-recipe-page',
-	imports: [RecipeList],
+	imports: [RecipeList, DropdownSelect],
 	templateUrl: './recipe-page.html',
 	styleUrl: './recipe-page.scss',
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RecipePage {
 	recipeService = inject(RecipeService);
-	searchTerm = signal<string>('');
-
+	searchTerm = signal('');
 
 	fileResource = httpResource<any>(() => ({
 		url: `https://www.themealdb.com/api/json/v1/1/search.php?s=${this.searchTerm()}`,
@@ -41,4 +41,16 @@ export class RecipePage {
 		const input = event.target as HTMLInputElement;
 		this.searchTerm.set(input.value);
 	}
+
+	showFilterPanel = signal(false);
+	toggleFilterPanel() {
+		this.showFilterPanel.update(value => !value);
+	}
+
+	selectOptions = signal<string[]>([
+		"Név szerint növekvő",
+		"Név szerint csökkenő",
+		"Legújabb elől",
+		"Legrégebbi elől"
+	]);
 }
