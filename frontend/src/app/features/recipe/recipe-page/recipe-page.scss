@@ -20,7 +20,7 @@
 		}
 
 		.container {
-			min-height: 0;
+			min-height: 0; // important for animation
 
 			> * {
 				padding: .6rem;

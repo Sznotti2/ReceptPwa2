@@ -22,7 +22,9 @@
 			</button>
 		</header>
 
-		<section class="modal-container-body rtf" [innerHTML]="contentHtml()"></section>
+		<section class="modal-container-body rtf">
+			<ng-content/>
+		</section>
 
 		<footer class="modal-container-footer">
 			@if (showCancelButton()) {

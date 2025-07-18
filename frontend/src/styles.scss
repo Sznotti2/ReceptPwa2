@@ -99,8 +99,6 @@ a:not([class]) {
 	--clr-tetrary: ;
 	--clr-active: hsl(330, 100%, 71%);
 	--clr-accent-hsl: 330, 100%, 71%;
-	--clr-error-hsl: 0, 85%, 61%;
-	--clr-success-hsl: 119, 94%, 43%;
 
 	--fs-small: 0.9em;
 	--fs-normal: 1.1em;
@@ -137,8 +135,11 @@ a:not([class]) {
 	--primary-hs: 0, 0%;
 	--secondary-hs: 210, 100%;
 	--accent-hs: 330, 100%;
-	--warning-hs: 0, 85%;
+
+	--warning-hs: 60, 100%;
 	--success-hs: 119, 94%;
+	--info-hs: 210, 100%;
+	--error-hs: 0, 85%;
 }
 
 [class*='dark'] {
@@ -996,20 +997,5 @@ fieldset {
 			gap: 1rem;
 			flex-direction: row;
 		}
-	}
-}
-
-.error {
-	padding: .5rem 1rem;
-	border: 2px solid hsla(var(--warning-hs), 50%, 1);
-	border-radius: .5rem;
-	background-color: hsla(var(--warning-hs), 50%, 0.2);
-	font-weight: bold;
-	display: inline-flex;
-	align-items: center;
-	gap: 1rem;
-
-	* {
-		color: hsla(var(--warning-hs), 50%, 1);
 	}
 }

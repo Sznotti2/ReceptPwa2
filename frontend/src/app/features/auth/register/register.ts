@@ -3,6 +3,7 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModu
 import { DOCUMENT } from '@angular/common';
 import { animate, style, transition, trigger, query, group } from '@angular/animations';
 import { Router, RouterLink } from '@angular/router';
+import { Alert } from '../../../shared/alert/alert';
 
 const hasOnlyLowercaseLetters = (control: AbstractControl): ValidationErrors | null => {
 	return /[A-Z]/.test(control.value) ? null : { hasOnlyLowercaseLetters: true };
@@ -10,7 +11,7 @@ const hasOnlyLowercaseLetters = (control: AbstractControl): ValidationErrors | n
 
 @Component({
 	selector: 'app-register',
-	imports: [ReactiveFormsModule, RouterLink],
+	imports: [ReactiveFormsModule, RouterLink, Alert],
 	templateUrl: './register.html',
 	styleUrl: './register.scss',
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -50,6 +51,7 @@ export class Register {
 	
 	userEmail = signal("gmail.com"); //TODO: get email from user after @
 	errorMessage = signal("");
+	otpErrorMessage = signal("");
 	registerForm: FormGroup;
 	verificationForm: FormGroup;
 	constructor(private formBuilder: FormBuilder) {
@@ -75,7 +77,8 @@ export class Register {
 			name: [""],
 			email: [""],
 			password: [""],
-			terms: [false]
+			terms: [false],
+			rememberMe: [false]
 		});
 
 		this.verificationForm = this.formBuilder.group({
@@ -123,29 +126,7 @@ export class Register {
 		const input = event.target as HTMLInputElement;
 	}
 	onPaste(event: ClipboardEvent) {
-		event.preventDefault();
-		const pasted = event.clipboardData?.getData('text/plain')?.trim() || '';
-		// csak az első 6 érvényes karakter
-		const chars = pasted.split('').filter(c => /\d/.test(c)).slice(0, 6);
-
-		// beállítjuk a formControl-okat
-		chars.forEach((ch, idx) => {
-			this.verificationForm.get(`code${idx + 1}`)?.setValue(ch);
-		});
-		// töröljük a maradék mezőket, ha rövidebb volt a paste
-		for (let i = chars.length; i < 6; i++) {
-			this.verificationForm.get(`code${i + 1}`)?.setValue('');
-		}
-
-		// fókusz az utolsó beállított mező +1-re, vagy a hatodikra
-		const focusIdx = chars.length < 6 ? chars.length + 1 : 6;
-		const next: HTMLInputElement | null = document.querySelector(`#code${focusIdx}`);
-		if (next) next.focus();
-
-		// ha minden mező valid, hívjuk
-		if (this.verificationForm.valid) {
-			this.verify();
-		}
+		
 	}
 
 	passwordVisible = signal(false);

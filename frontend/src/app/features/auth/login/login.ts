@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Alert } from '../../../shared/alert/alert';
 
 @Component({
 	selector: 'app-login',
-	imports: [ReactiveFormsModule, RouterLink],
+	imports: [ReactiveFormsModule, RouterLink, Alert],
 	templateUrl: './login.html',
 	styleUrl: './login.scss',
 	changeDetection: ChangeDetectionStrategy.OnPush

@@ -1,0 +1,48 @@
+[role="alert"] {
+	border-radius: .5rem;
+	border: 2px solid hsla(var(--_color), 50%, 1);
+	background-color: hsla(var(--_color), 50%, 0.1);
+	color: hsla(var(--_color), 50%, 1);
+	font-weight: bold;
+	display: grid;
+	grid-template-rows: 1fr;
+
+	opacity: 1;
+	overflow: hidden;
+	transition: var(--transition);
+
+	@starting-style {
+		opacity: 0;
+		grid-template-rows: 0fr;
+	}
+
+	.alert-content {
+		display: flex;
+		align-items: center;
+		min-height: 0; // grid-template-rows transition requires this
+
+		> * {
+			padding: .5rem 0 .5rem 1rem;
+		}
+	}
+
+	&.info {
+		--_color: var(--info-hs);
+	}
+
+	&.warning {
+		--_color: var(--warning-hs);
+	}
+
+	&.error {
+		--_color: var(--error-hs);
+	}
+
+	&.success {
+		--_color: var(--success-hs);
+	}
+
+	* {
+		color: inherit;
+	}
+}

@@ -94,6 +94,12 @@
 </fieldset>
 
 @if (showModal) {
-	<app-modal title="Fiók törlése" [contentHtml]="safeHtml" (confirm)="onModalConfirm()" (cancel)="onModalCancel()">
+	<app-modal 
+		title="Fiók törlése" 
+		[showConfirmButton]="true"
+		[showCancelButton]="true" 
+		(confirm)="onModalConfirm()" 
+		(cancel)="onModalCancel()">
+		<p>Biztos benne, hogy törölni szeretné a fiókját?</p>
 	</app-modal>
 }

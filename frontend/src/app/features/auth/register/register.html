@@ -16,22 +16,13 @@
 			</div>
 			@if (name.invalid && name.touched) {
 				@if ( name.errors?.['required'] ) {
-					<div class="error">
-						<span class="material-icons">cancel</span>
-						<span>A felhasználó nevet meg kell adni!</span>	
-					</div>
+					<app-alert message="A felhasználó nevet meg kell adni!"/>
 				}
 				@if ( name.hasError("minlength") ) {
-					<div class="error">
-						<span class="material-icons">cancel</span>
-						<span>A felhasználó név minimum 3 karakter kell, hogy legyen!</span>
-					</div>
+					<app-alert message="A felhasználó név minimum 3 karakter kell, hogy legyen!"/>
 				}
 				@if ( name.hasError("maxlength") ) {
-					<div class="error">
-						<span class="material-icons">cancel</span>
-						<span>A felhasználó név maximum 32 karakterből állhat!</span>
-					</div>
+					<app-alert message="A felhasználó név maximum 32 karakterből állhat!"/>
 				}
 			}
 
@@ -41,16 +32,10 @@
 			</div>
 			@if (email.invalid && email.touched) {
 				@if (email.errors?.['required']) {
-					<div class="error">
-						<span class="material-icons">cancel</span>
-						<span>Az email címet meg kell adni!</span>
-					</div>
+					<app-alert message="Az email címet meg kell adni!" />
 				}
 				@if (email.hasError("email") ) {
-					<div class="error">	
-						<span class="material-icons">cancel</span>
-						<span>Helytelen email formátum!</span>
-					</div>
+					<app-alert message="Helytelen email formátum!" />
 				}
 			}
 
@@ -63,28 +48,16 @@
 			</div>
 			@if (password.invalid && password.touched) {
 				@if (password.errors?.['required']) {
-					<div class="error">
-						<span class="material-icons">cancel</span>
-						<span>Jelszót kötelező megadni!</span>
-					</div>
+					<app-alert message="Jelszót kötelező megadni!" />
 				}
 				@if ( password.hasError("minlength") ) {
-					<div class="error">
-						<span class="material-icons">cancel</span>
-						<span>A jelszó minimum 6 karakter kell hogy legyen!</span>
-					</div>
+					<app-alert message="A jelszó minimum 6 karakter kell hogy legyen!" />
 				}
 				@if ( password.hasError("maxlength") ) {
-					<div class="error">
-						<span class="material-icons">cancel</span>
-						<span>A jelszó maximum 32 karakterből állhat!</span>
-					</div>
+					<app-alert message="A jelszó maximum 32 karakterből állhat!" />
 				}
 				@if ( password.hasError("hasOnlyLowercaseLetters") ) {
-					<div class="error">
-						<span class="material-icons">cancel</span>
-						<span>Legalább 1 nagybetűt meg kell adni!</span>
-					</div>
+					<app-alert message="Legalább 1 nagybetűt meg kell adni!" />
 				}
 			}
 
@@ -94,26 +67,20 @@
 			</div>
 			@if (terms.invalid && terms.touched) {
 				@if (terms.errors?.['requiredTrue']) {
-					<div class="error">
-						<span class="material-icons-outlined">cancel</span>
-						<span>Adatkezelési tájékoztatóban foglaltakat el kell fogadni!</span>
-					</div>
+					<app-alert message="Adatkezelési tájékoztatóban foglaltakat el kell fogadni!" />
 				}
 			}
 
 			<div class="row">
 				<div>
-					<input id="keep-logged-in" class="checkbox" type="checkbox" aria-hidden="true" formControlName="terms">
-					<label for="keep-logged-in">Emlékezz rám</label>
+					<input id="rememberMe" class="checkbox" type="checkbox" aria-hidden="true" formControlName="rememberMe">
+					<label for="rememberMe">Emlékezz rám</label>
 				</div>
 			</div>
 
 			<button [disabled]="registerForm.invalid" class="cta" type="submit">Register</button>
 			@if (errorMessage()) {
-				<div class="error">
-					<span class="material-icons-outlined">cancel</span>
-					<span>{{ errorMessage() }}</span>
-				</div>
+				<app-alert message="{{ errorMessage() }}" />
 			}
 		</form>
 
@@ -165,6 +132,9 @@
 					(keydown)="onOtpKeydown($event, 6)"
 					#input6>
 			</div>
+			@if (otpErrorMessage()) {
+				<app-alert message="{{ otpErrorMessage() }}" />
+			}
 
 			<button class="cta" type="submit">Verify</button>
 		</form>

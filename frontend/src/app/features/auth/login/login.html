@@ -6,13 +6,9 @@
 			<input id="email" type="text" placeholder="" formControlName="email">
 			<label for="email">Email vagy felhasználónév</label>
 		</div>
-		
 		@if (email.invalid && email.touched) {
 			@if (email.errors?.['required']) {
-				<div class="error">
-					<span class="material-icons">cancel</span>
-					<span>Az email címet meg kell adni!</span>
-				</div>
+				<app-alert message="Az email címet meg kell adni!" />
 			}
 		}
 
@@ -25,10 +21,7 @@
 		</div>
 		@if (password.invalid && password.touched) {
 			@if (password.errors?.['required']) {
-				<div class="error">
-					<span class="material-icons">cancel</span>
-					<span>Jelszót kötelező megadni!</span>
-				</div>
+				<app-alert message="Jelszót kötelező megadni!" />
 			}
 		}
 
@@ -43,10 +36,7 @@
 
 		<button [disabled]="loginForm.invalid" class="cta" type="submit">Belépés</button>
 		@if (errorMessage()) {
-			<div class="error">
-				<span class="material-icons-outlined">cancel</span>
-				<span>{{ errorMessage() }}</span>
-			</div>
+			<app-alert message="{{ errorMessage() }}" />
 		}
 	</form>
 </fieldset>

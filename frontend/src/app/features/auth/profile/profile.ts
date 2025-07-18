@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { User } from '../models/user';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Modal } from '../../../shared/modal/modal';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { animate, style, transition, trigger, query, group } from '@angular/animations';
 
 @Component({
@@ -45,7 +44,6 @@ export class Profile {
 	cd = inject(ChangeDetectorRef);
 	private router = inject(Router);
 	formBuilder = inject(FormBuilder);
-	sanitizer = inject(DomSanitizer);
 
 	// imgbb = inject(ImgbbService);
 	imageSrc = signal<string>("");
@@ -81,8 +79,6 @@ export class Profile {
 			currentPassword: [""],
 			newPassword: [""]
 		});
-
-		this.safeHtml = this.sanitizer.bypassSecurityTrustHtml(this.rawHtml);
 	}
 
 	updateAccount() {
@@ -121,11 +117,6 @@ export class Profile {
 		}
 	}
 
-
-	rawHtml = `
-		<p>Biztosan törölni szeretnéd a fiókodat? Ez végleges.</p>
-	`;
-	safeHtml: SafeHtml;
 	showModal = false;
 	showDeleteModal() {
 		this.showModal = true;
