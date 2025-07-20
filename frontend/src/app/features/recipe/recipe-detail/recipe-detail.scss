@@ -19,6 +19,7 @@ header {
 		max-height: 100%;
 		justify-self: end;
 		border-radius: var(--gap-small);
+		overflow: hidden;
 	}
 
 	.recipe-info > * + * {

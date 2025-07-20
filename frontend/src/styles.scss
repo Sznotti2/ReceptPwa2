@@ -271,13 +271,20 @@ button {
 		background-color: hsl(var(--accent-hs), var(--lightness-600));
 	}
 
+	&.error {
+		--primary-hs: var(--error-hs);
+		--lightness-100: var(--lightness-300);
+	}
+	&.success {
+		--primary-hs: var(--success-hs);
+		--lightness-100: var(--lightness-300);
+	}
 	&.warning {
 		--primary-hs: var(--warning-hs);
 		--lightness-100: var(--lightness-300);
 	}
-
-	&.success {
-		--primary-hs: var(--success-hs);
+	&.info {
+		--primary-hs: var(--info-hs);
 		--lightness-100: var(--lightness-300);
 	}
 
@@ -621,7 +628,7 @@ input[type="search"] {
 	border-radius: var(--_border-radius);
 	overflow: hidden;
 	background-color: hsl(var(--primary-hs), var(--lightness-800));
-	padding: .3rem;
+	padding: .2rem;
 
 	input[type=radio] {
 		position: absolute;
@@ -636,7 +643,7 @@ input[type="search"] {
 
 	label {
 		display: inline-block;
-		padding: .3rem 1rem;
+		padding: .2rem .6rem;
 		color: hsl(var(--primary-hs), var(--lightness-100));
 		border-radius: var(--_border-radius);
 		transition: var(--transition);
@@ -646,6 +653,31 @@ input[type="search"] {
 		&:hover {
 			background-color: hsl(var(--primary-hs), var(--lightness-700));
 		}
+	}
+}
+
+.image-upload {
+	label {
+		padding: .5rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: .5rem;
+		border: 2px dashed black;
+		cursor: pointer;
+
+		svg {
+			max-width: 40px;
+		}
+
+		img {
+			object-fit: cover;
+			max-height: 18rem;
+		}
+	}
+
+	input {
+		display: none;
 	}
 }
 
