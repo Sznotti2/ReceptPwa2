@@ -65,10 +65,7 @@
 			<app-recipe-list [recipes]="recipes()"></app-recipe-list>
 		}
 		@case ("error") {
-			<div class="error">
-				<span class="material-icons">error</span>
-				<span>Hiba történt a receptek betöltésekor</span>
-			</div>
+			<app-alert [message]="'Hiba történt a receptek betöltésekor'" />
 		}
 	}
 </section>

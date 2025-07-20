@@ -4,10 +4,11 @@ import { httpResource } from '@angular/common/http';
 import { Recipe } from '../models/recipe';
 import { RecipeList } from '../recipe-list/recipe-list';
 import { DropdownSelect } from "../../../shared/dropdown-select/dropdown-select";
+import { Alert } from '../../../shared/alert/alert';
 
 @Component({
 	selector: 'app-recipe-page',
-	imports: [RecipeList, DropdownSelect],
+	imports: [RecipeList, DropdownSelect, Alert],
 	templateUrl: './recipe-page.html',
 	styleUrl: './recipe-page.scss',
 	changeDetection: ChangeDetectionStrategy.OnPush
