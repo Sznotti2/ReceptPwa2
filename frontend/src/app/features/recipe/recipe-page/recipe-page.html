@@ -9,9 +9,7 @@
 			<i class="material-icons icon">filter_alt</i>
 		</button>
 
-		<app-dropdown-select 
-			[placeholder]="'Rendezés'"
-			[options]="selectOptions()"></app-dropdown-select>
+		<app-dropdown-select [placeholder]="'Rendezés'"	[options]="selectOptions()" />
 	</div>
 
 	<div class="filter-panel" [class.show]="showFilterPanel()">
@@ -20,35 +18,86 @@
 			<div>
 				<h4>Évszak</h4>
 				<ul class="toggle-pills">
-					<li class="active"><span>Tavasz</span></li>
-					<li><span>Nyár</span></li>
-					<li><span>Ősz</span></li>
-					<li><span>Tél</span></li>
+					<li>
+						<input type="checkbox" name="spring" id="spring">
+						<label for="spring">Tavasz</label>
+					</li>
+					<li>
+						<input type="checkbox" name="summer" id="summer">
+						<label for="summer">Nyár</label>
+					</li>
+					<li>
+						<input type="checkbox" name="autumn" id="autumn">
+						<label for="autumn">Ősz</label>
+					</li>
+					<li>
+						<input type="checkbox" name="winter" id="winter">
+						<label for="winter">Tél</label>
+					</li>
 				</ul>
 			</div>
 
 			<div>
 				<h4>Étrend</h4>
 				<ul class="toggle-pills">
-					<li class="active"><span>Vegetáriánus</span></li>
-					<li><span>Vegán</span></li>
-					<li><span>Gluténmentes</span></li>
-					<li><span>Laktózmentes</span></li>
+					<li>
+						<input type="checkbox" name="vegetarian" id="vegetarian">
+						<label for="vegetarian">Vegetáriánus</label>
+					</li>
+					<li>
+						<input type="checkbox" name="vegan" id="vegan">
+						<label for="vegan">Vegán</label>
+					</li>
+					<li>
+						<input type="checkbox" name="glutenFree" id="glutenFree">
+						<label for="glutenFree">Gluténmentes</label>
+					</li>
+					<li>
+						<input type="checkbox" name="lactoseFree" id="lactoseFree">
+						<label for="lactoseFree">Laktózmentes</label>
+					</li>
 				</ul>
 			</div>
 
 			<div>
 				<h4>Összetevők</h4>
 				<ul class="toggle-pills">
-					<li class="active"><span>Cukor</span></li>
-					<li><span>Liszt</span></li>
-					<li><span>Tojás</span></li>
-					<li><span>Tej</span></li>
-					<li><span>Csokoládé</span></li>
-					<li><span>Gyümölcs</span></li>
-					<li><span>Zöldség</span></li>
-					<li><span>Eper</span></li>
-					<li><span>Banán</span></li>
+					<li>
+						<input type="checkbox" name="meat" id="meat">
+						<label for="meat">Hús</label>
+					</li>
+					<li>
+						<input type="checkbox" name="flour" id="flour">
+						<label for="flour">Liszt</label>
+					</li>
+					<li>
+						<input type="checkbox" name="egg" id="egg">
+						<label for="egg">Tojás</label>
+					</li>
+					<li>
+						<input type="checkbox" name="milk" id="milk">
+						<label for="milk">Tej</label>
+					</li>
+					<li>
+						<input type="checkbox" name="chocolate" id="chocolate">
+						<label for="chocolate">Csokoládé</label>
+					</li>
+					<li>
+						<input type="checkbox" name="fruit" id="fruit">
+						<label for="fruit">Gyümölcs</label>
+					</li>
+					<li>
+						<input type="checkbox" name="vegetable" id="vegetable">
+						<label for="vegetable">Zöldség</label>
+					</li>
+					<li>
+						<input type="checkbox" name="strawberry" id="strawberry">
+						<label for="strawberry">Eper</label>
+					</li>
+					<li>
+						<input type="checkbox" name="banana" id="banana">
+						<label for="banana">Banán</label>
+					</li>
 				</ul>
 			</div>
 

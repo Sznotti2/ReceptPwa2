@@ -156,36 +156,6 @@ a:not([class]) {
 	--lightness-1000: 0%;
 }
 
-[class*='blue'] {
-	--primary-hs: 210, 100%;
-	--accent-hs: 330, 100%;
-}
-
-[class*='green'] {
-	--primary-hs: 120, 100%;
-	--accent-hs: 330, 100%;
-}
-
-[class*='red'] {
-	--primary-hs: 0, 100%;
-	--accent-hs: 330, 100%;
-}
-
-[class*='purple'] {
-	--primary-hs: 270, 100%;
-	--accent-hs: 330, 100%;
-}
-
-[class*='pink'] {
-	--primary-hs: 330, 100%;
-	--accent-hs: 330, 100%;
-}
-
-[class*='orange'] {
-	--primary-hs: 30, 100%;
-	--accent-hs: 330, 100%;
-}
-
 ::selection {
 	background-color: hsl(var(--accent-hs), var(--lightness-700));
 	color: hsl(var(--accent-hs), var(--lightness-100));
@@ -231,9 +201,10 @@ p {
 }
 
 .round {
-	border-radius: 100vw;
+	border-radius: 100vw!important;
 }
 
+.button,
 button {
 	padding: .5rem 1rem;
 	color: hsl(var(--primary-hs), var(--lightness-100));

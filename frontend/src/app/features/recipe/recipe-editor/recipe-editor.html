@@ -70,15 +70,9 @@
 
 				@for (elem of ingredients.controls; track elem; let ingredientIndex = $index) {
 					<div [formGroupName]="ingredientIndex">
-						<!-- <div class="icon-input">
-							<input id="ingredient-{{ingredientIndex}}-title" type="text" formControlName="title" autocomplete="off">
-							<button class="error" type="button" title="Lista eltávolítása" (click)="removeIngredient(ingredientIndex)">
-								<i class="material-icons icon">close</i>
-							</button>
-						</div> -->
 						<div class="icon-input">
 							<input id="ingredient-{{ingredientIndex}}-title" type="text" formControlName="title" autocomplete="off">
-							<button type="button" title="Lista eltávolítása" (click)="removeIngredient(ingredientIndex)">
+							<button class="error" type="button" title="Lista eltávolítása" (click)="removeIngredient(ingredientIndex)">
 								<i class="material-icons icon">close</i>
 							</button>
 						</div>

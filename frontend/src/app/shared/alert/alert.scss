@@ -20,6 +20,7 @@
 		display: flex;
 		align-items: center;
 		min-height: 0; // grid-template-rows transition requires this
+		align-self: end;
 
 		> * {
 			padding: .5rem 0 .5rem 1rem;
