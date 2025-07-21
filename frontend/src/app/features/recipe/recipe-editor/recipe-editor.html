@@ -17,16 +17,15 @@
 		</div>
 
 		<div class="recipe-info">
-			<textarea name="name" id="name" rows="2" placeholder="Valami frappáns sütinév"
-				autocomplete="off"></textarea>
+			<textarea formControlName="name" id="name" rows="2" placeholder="Valami frappáns sütinév" autocomplete="off"></textarea>
 			<div class="details">
 				<div class="suffix-group">
 					<!-- Forces number pad on mobile -->
-					<input inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
+					<input formControlName="timeToMake" id="timeToMake" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
 					<span>perc</span>
 				</div>
 				<div class="suffix-group">
-					<input inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
+					<input formControlName="servings" id="servings" inputmode="numeric" pattern="[0-9]*" autocomplete="off" />
 					<span>adag</span>
 				</div>
 				<div class="row">
@@ -44,11 +43,12 @@
 
 			<div class="categories" formArrayName="categories">
 				@for (category of categories.controls; track category; let categoryIndex = $index) {
-					<input [formControlName]="categoryIndex" placeholder="kategória">
-					<button class="error" type="button" (click)="removeCategory(categoryIndex)"
-						title="Kategória eltávolítása">
-						<i class="material-icons icon">close</i>
-					</button>
+					<div class="icon-input">
+						<input [formControlName]="categoryIndex" id="categoryIndex-{{categoryIndex}}" type="text" placeholder="kategória">
+						<button class="error" type="button" title="Kategória eltávolítása" (click)="removeCategory(categoryIndex)">
+							<i class="material-icons icon">close</i>
+						</button>
+					</div>
 				}
 
 				<button class="success" type="button" title="Kategória hozzáadása" (click)="addCategory()">
@@ -62,8 +62,7 @@
 		<section class="process">
 			<section class="author-notes">
 				<h3>Cukrászunk megjegyzése</h3>
-				<textarea name="description" id="description" rows="4" placeholder="Írd ide a megjegyzéseidet..."
-					autocomplete="off"></textarea>
+				<textarea formControlName="authorNotes" id="authorNotes" rows="4" placeholder="Írd ide a megjegyzéseidet..." autocomplete="off"></textarea>
 			</section>
 
 			<div class="ingredients" formArrayName="ingredients">
@@ -71,10 +70,15 @@
 
 				@for (elem of ingredients.controls; track elem; let ingredientIndex = $index) {
 					<div [formGroupName]="ingredientIndex">
-						<div class="icon-input row">
-							<input type="text" formControlName="title">
-							<button class="error" type="button" title="Lista eltávolítása"
-								(click)="removeIngredient(ingredientIndex)">
+						<!-- <div class="icon-input">
+							<input id="ingredient-{{ingredientIndex}}-title" type="text" formControlName="title" autocomplete="off">
+							<button class="error" type="button" title="Lista eltávolítása" (click)="removeIngredient(ingredientIndex)">
+								<i class="material-icons icon">close</i>
+							</button>
+						</div> -->
+						<div class="icon-input">
+							<input id="ingredient-{{ingredientIndex}}-title" type="text" formControlName="title" autocomplete="off">
+							<button type="button" title="Lista eltávolítása" (click)="removeIngredient(ingredientIndex)">
 								<i class="material-icons icon">close</i>
 							</button>
 						</div>
@@ -82,17 +86,15 @@
 						<ul formArrayName="ingredientList">
 							@for (ingredient of getIngredientListAt(ingredientIndex).controls; track ingredient; let j = $index) {
 								<li>
-									<div class="icon-input row">
-										<input type="text" [formControlName]="j">
-										<button class="error" type="button" title="Listaelem eltávolítása"
-											(click)="removeIngredientItem(ingredientIndex, j)">
+									<div class="icon-input">
+										<input id="ingredient-{{ingredientIndex}}-item-{{j}}" type="text" [formControlName]="j" autocomplete="off">
+										<button class="error" type="button" title="Listaelem eltávolítása" (click)="removeIngredientItem(ingredientIndex, j)">
 											<i class="material-icons icon">close</i>
 										</button>
 									</div>
 								</li>
 							}
-							<button class="success" type="button" title="Listaelem hozzáadása"
-								(click)="addIngredientItem(ingredientIndex)">
+							<button class="success" type="button" title="Listaelem hozzáadása" (click)="addIngredientItem(ingredientIndex)">
 								<i class="material-icons icon">add</i>
 							</button>
 						</ul>
@@ -111,10 +113,8 @@
 					@for (instruction of instructions.controls; track instruction; let instructionIndex = $index) {
 						<li [formGroupName]="instructionIndex">
 							<div class="instruction-row">
-								<textarea formControlName="text" cols="30" rows="3"
-									placeholder="Recept leírás"></textarea>
-								<button class="error" type="button" title="Leírás eltávolítása"
-									(click)="removeInstruction(instructionIndex)">
+								<textarea id="instruction-text-{{instructionIndex}}" formControlName="text" cols="30" rows="3" placeholder="Recept leírás" autocomplete="off"></textarea>
+								<button class="error" type="button" title="Leírás eltávolítása" (click)="removeInstruction(instructionIndex)">
 									<i class="material-icons icon">close</i>
 								</button>
 							</div>
@@ -143,14 +143,12 @@
 												accept="image/*">
 										</div>
 
-										<button class="error" type="button" title="Kép eltávolítása"
-											(click)="removeImageInput(instructionIndex, imageIndex)">
+										<button class="error" type="button" title="Kép eltávolítása" (click)="removeImageInput(instructionIndex, imageIndex)">
 											<i class="material-icons icon">close</i>
 										</button>
 									</div>
 								}
-								<button class="success" type="button" title="Kép hozzáadása"
-									(click)="addImageInput(instructionIndex)">
+								<button class="success" type="button" title="Kép hozzáadása" (click)="addImageInput(instructionIndex)">
 									<i class="material-icons icon">add</i>
 								</button>
 							</div>

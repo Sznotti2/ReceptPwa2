@@ -18,12 +18,12 @@ export class RecipeEditor {
 
 	constructor() {
 		this.recipeEditForm = this.formBuilder.group({
-			name: ["", {validators: [Validators.required]}],
-			description: [""],
-			image: [""],
-			servings: [0, {validators: [Validators.required, Validators.min(1)]}],
-			timeToMake: [0, {validators: [Validators.required, Validators.min(1)]}],
-			complexity: [""],
+			name: ["", { validators: [Validators.required] }],
+			image: ["", { validators: [Validators.required] }],
+			servings: ["", { validators: [Validators.required] }],
+			timeToMake: ["", { validators: [Validators.required] }],
+			complexity: ["", { validators: [Validators.required] }],
+			authorNotes: ["", { validators: [Validators.required] }],
 			categories: this.formBuilder.array([]),
 			ingredients: this.formBuilder.array([]),
 			instructions: this.formBuilder.array([]),

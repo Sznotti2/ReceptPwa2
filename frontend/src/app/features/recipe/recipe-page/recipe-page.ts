@@ -29,7 +29,7 @@ export class RecipePage {
 		return res.meals.map((m: any): Recipe => ({
 			id: m.idMeal,
 			name: m.strMeal,
-			description: m.strInstructions,
+			authorNotes: m.strInstructions,
 			image: m.strMealThumb,
 			categories: [m.strCategory].filter(Boolean),
 			timeToMake:  Math.floor(Math.random()*60)+20,

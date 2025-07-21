@@ -1,7 +1,7 @@
 export interface Recipe {
 	id: string;
 	name: string;
-	description: string;
+	authorNotes: string;
 	image: string;
 	categories: string[];
 	timeToMake: number;
