@@ -2,6 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { User, UserLogin, UserRegister } from '../models/user';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
+import { Otp } from '../models/otp';
 
 @Injectable({
 	providedIn: 'root'
@@ -9,48 +10,41 @@ import { map, Observable } from 'rxjs';
 export class AuthService {
 	http = inject(HttpClient);
 	// imgbbService = inject(ImgbbService);
-	apiUrl = 'http://localhost:5000/api/user';
+	apiUrl = 'http://localhost:8000/api/user';
 
 	user = signal<User | null>(null);
 
 	register(user: UserRegister): Observable<any> {
-		return this.http.post(
-			this.apiUrl + "/register",
-			{ user }
-		);
+		return this.http.post(this.apiUrl + "/", user);
 	}
 
 	login(user: UserLogin): Observable<any> {
-		return this.http.post<User>(
-			this.apiUrl + "/login",
-			{ user }
-		).pipe(map((response: User) => {
-			this.user.set(response);
-		}));
+		return this.http.post<User>(this.apiUrl + "/login", user)
+			.pipe(map((response: User) => {
+				this.user.set(response);
+			}));
+	}
+
+	verify(otp: Otp): Observable<any> {
+		return this.http.post(this.apiUrl + "/verify", otp);
 	}
 
 	logout(): Observable<any> {
 		this.user.set(null);
 
-		return this.http.post(
-			this.apiUrl + `/logout`,
-			{}
-		);
+		return this.http.post(this.apiUrl + `/logout`, {});
 	}
 
 	editUser(user: User): Observable<any> {
-		return this.http.put(
-			this.apiUrl + `/`,
-			{ user }
-		);
+		return this.http.put<User>(this.apiUrl + `/`, user).
+			pipe(map((response: User) => {
+				this.user.set(response);
+			}));
 	}
 
 	deleteUser(): Observable<any> {
 		this.user.set(null);
 
-		return this.http.delete(
-			this.apiUrl + `/`,
-			{}
-		);
+		return this.http.delete(this.apiUrl + `/`, {});
 	}
 }

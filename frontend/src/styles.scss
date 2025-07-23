@@ -142,7 +142,7 @@ a:not([class]) {
 	--error-hs: 0, 85%;
 }
 
-[class*='dark'] {
+[data-theme='dark'] {
 	--lightness-000: 100%;
 	--lightness-100: 90%;
 	--lightness-200: 80%;

@@ -15,30 +15,33 @@ export class Login {
 	private router = inject(Router);
 	private authService = inject(AuthService);
 
+	errorMessage = signal("");
 	loginForm: FormGroup;
 	constructor(private formBuilder: FormBuilder) {
 		this.loginForm = this.formBuilder.group({
 			email: ["", { validators: [Validators.required] }],
 			password: ["", { validators: [Validators.required] }],
 		});
+		// this.loginForm = this.formBuilder.group({
+		// 	email: [""],
+		// 	password: [""],
+		// });
 	}
 
-	errorMessage = signal<string | null>(null);
 	public login() {
-		// if (this.loginForm.valid) {
-		// 	const form = this.loginForm.value;
-		// 	this.authService.login(form.email, form.password)
-		// 		.subscribe({
-		// 			next: () => {
-		// 				this.router.navigateByUrl("/")
-		// 			},
-		// 			error: (error) => {
-		// 				this.errorMessage.set(error.error.error);
-		// 			}
-		// 		});
-		// } else {
-		// 	console.log("Invalid form");
-		// }
+		if (this.loginForm.valid) {
+			this.authService.login(this.loginForm.value)
+				.subscribe({
+					next: () => {
+						this.router.navigateByUrl("/")
+					},
+					error: (error) => {
+						this.errorMessage.set(error.message);
+					}
+				});
+		} else {
+			this.errorMessage.set("Invalid form");
+		}
 	}
 
 	get email() {

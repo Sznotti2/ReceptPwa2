@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
 import { animate, style, transition, trigger, query, group } from '@angular/animations';
 import { Router, RouterLink } from '@angular/router';
 import { Alert } from '../../../shared/alert/alert';
+import { AuthService } from '../services/auth.service';
 
 const hasOnlyLowercaseLetters = (control: AbstractControl): ValidationErrors | null => {
 	return /[A-Z]/.test(control.value) ? null : { hasOnlyLowercaseLetters: true };
@@ -45,6 +46,7 @@ const hasOnlyLowercaseLetters = (control: AbstractControl): ValidationErrors | n
 export class Register {
 	private document = inject(DOCUMENT);
 	private router = inject(Router);
+	authService = inject(AuthService);
 
 	animationDisabled = signal(true);
 	isRegisterForm = signal(true);
@@ -57,19 +59,36 @@ export class Register {
 	constructor(private formBuilder: FormBuilder) {
 		// this.registerForm = this.formBuilder.group({
 		// 	name: ["", {
-		// 		validators: [Validators.required, Validators.minLength(3), Validators.maxLength(32)],
+		// 		validators: [Validators.required, Validators.minLength(3), Validators.maxLength(64)],
 		// 	}],
 		// 	email: ["", {
 		// 		validators: [Validators.required, Validators.email],
 		// 	}],
 		// 	password: ["", {
-		// 		validators: [Validators.required, Validators.minLength(6), Validators.maxLength(32), hasOnlyLowercaseLetters],
-		// 	}],
-		// 	password2: ["", {
-		// 		validators: [Validators.required],
+		// 		validators: [Validators.required, Validators.minLength(6), Validators.maxLength(64), hasOnlyLowercaseLetters],
 		// 	}],
 		// 	terms: [false, {
 		// 		validators: [Validators.requiredTrue],
+		// 	}]
+		// });
+		// this.verificationForm = this.formBuilder.group({
+		// 	digit1: ["", {
+		// 		validators: [Validators.required, Validators.pattern(/^\d$/)],
+		// 	}],
+		// 	digit2: ["", {
+		// 		validators: [Validators.required, Validators.pattern(/^\d$/)],
+		// 	}],
+		// 	digit3: ["", {
+		// 		validators: [Validators.required, Validators.pattern(/^\d$/)],
+		// 	}],
+		// 	digit4: ["", {
+		// 		validators: [Validators.required, Validators.pattern(/^\d$/)],
+		// 	}],
+		// 	digit5: ["", {
+		// 		validators: [Validators.required, Validators.pattern(/^\d$/)],
+		// 	}],
+		// 	digit6: ["", {
+		// 		validators: [Validators.required, Validators.pattern(/^\d$/)],
 		// 	}]
 		// });
 
@@ -77,8 +96,7 @@ export class Register {
 			name: [""],
 			email: [""],
 			password: [""],
-			terms: [false],
-			rememberMe: [false]
+			terms: [false]
 		});
 
 		this.verificationForm = this.formBuilder.group({
@@ -93,20 +111,37 @@ export class Register {
 
 	register(): void {
 		if (this.registerForm.valid) {
-			this.toggle();
+			this.authService.register(this.registerForm.value)
+				.subscribe({
+					next: () => {
+						this.isRegisterForm.set(!this.isRegisterForm());
+					},
+					error: (error) => {
+						console.error("Registration failed:", error);
+						this.errorMessage.set(`Registration failed. ${error.message}`);
+					}
+				});
+		} else {
+			this.errorMessage.set("Please fill in all required fields correctly.");
 		}
 	}
 
 	verify() {
 		if (this.verificationForm.valid) {
-			this.toggle();
+			this.authService.verify(this.verificationForm.value)
+				.subscribe({
+					next: () => {
+						this.router.navigate(['/login']);
+					},
+					error: (error) => {
+						console.error("Verification failed:", error);
+						this.otpErrorMessage.set(`Verification failed. ${error.message}`);
+					}
+				});
+		} else {
+			this.otpErrorMessage.set("Please fill in all OTP fields correctly.");
 		}
 	}
-
-	toggle() {
-		this.isRegisterForm.set(!this.isRegisterForm());
-	}
-
 
 	/** Ezt löki át a template minden input eventnél */
 	onInput(event: Event, nextInputId?: number) {
