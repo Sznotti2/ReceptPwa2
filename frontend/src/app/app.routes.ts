@@ -7,12 +7,19 @@ import { Profile } from './features/auth/profile/profile';
 import { NotFound } from './features/not-found/not-found';
 import { RecipePage } from './features/recipe/recipe-page/recipe-page';
 import { BlogPage } from './features/blog/blog-page/blog-page';
+import { RecipeEditor } from './features/recipe/recipe-editor/recipe-editor';
+import { BlogEditor } from './features/blog/blog-editor/blog-editor';
 
 export const routes: Routes = [
 	{
 		path: "recipe/:slug",
-		loadComponent: () => import("./features/recipe/recipe-detail/recipe-detail").then(m => m.RecipeDetail),
-		title: "Receptek"
+		title: "Receptek",
+		loadComponent: () => import("./features/recipe/recipe-detail/recipe-detail").then(m => m.RecipeDetail)
+	},
+	{
+		path: "edit/recipe",
+		title: "Recept szerkesztése",
+		component: RecipeEditor
 	},
 	{
 		path: "recipe",
@@ -23,6 +30,11 @@ export const routes: Routes = [
 		path: "blog/:slug",
 		loadComponent: () => import("./features/blog/blog-detail/blog-detail").then(m => m.BlogDetail),
 		title: "Receptek"
+	},
+	{
+		path: "edit/blog",
+		title: "Blog szerkesztése",
+		component: BlogEditor
 	},
 	{
 		path: "blog",

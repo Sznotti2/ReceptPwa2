@@ -1,12 +1,10 @@
 <footer>
 	<p>Készítette: egy gazember, Copyright &copy; 2025</p>
-	<p class="link" (click)="openModal()">Felhasználási feltételek</p>
+	<a (click)="openModal()">Felhasználási feltételek</a>
 </footer>
 
 @if (showModal()) {
-	<app-modal
-		[title]="'Felhasználási feltételek'"
-		(cancel)="closeModal()">
+	<app-modal [title]="'Felhasználási feltételek'" (cancel)="closeModal()">
 
 		<h3>Quarum ambarum rerum cum medicinam pollicetur, luxuriae licentiam pollicetur.</h3>
 

@@ -52,7 +52,7 @@
 			</div>
 
 			<button class="cta" type="submit" [disabled]="editForm.invalid">Módosítás</button>
-			<button class="warning solid" type="button" (click)="showDeleteModal()">Fiók törlése</button>
+			<button class="error solid" type="button" (click)="showDeleteModal()">Fiók törlése</button>
 			<button class="outlined" type="button" (click)="showForm('verification')">Jelszó megváltoztatása</button>
 		</form>
 	} @else if (activeForm() === "verification") {
