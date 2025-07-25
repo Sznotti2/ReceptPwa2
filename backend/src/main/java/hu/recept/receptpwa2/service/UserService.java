@@ -3,6 +3,7 @@ package hu.recept.receptpwa2.service;
 //import hu.recept.receptpwa2.config.AppConfig;
 import hu.recept.receptpwa2.model.User;
 import hu.recept.receptpwa2.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -16,7 +17,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 @Service
-public class UserServiceImpl implements UserRepository {
+public class UserService implements UserRepository {
     @Autowired
     private UserRepository userRepository;
 
@@ -26,6 +27,7 @@ public class UserServiceImpl implements UserRepository {
     }
 
     @Override
+    @Transactional
     public <S extends User> S saveAndFlush(S entity) {
         return userRepository.saveAndFlush(entity);
     }
@@ -101,6 +103,7 @@ public class UserServiceImpl implements UserRepository {
     }
 
     @Override
+    @Transactional
     public <S extends User> S save(S entity) {
         return userRepository.save(entity);
     }

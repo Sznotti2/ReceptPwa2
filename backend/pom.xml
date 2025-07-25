@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>hu.recept</groupId>
-    <artifactId>receptpwa2</artifactId>
+    <artifactId>backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>receptpwa2</name>
     <description>receptpwa2</description>
