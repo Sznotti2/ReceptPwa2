@@ -1,24 +1,19 @@
 package hu.recept.receptpwa2.model;
 
-/*import hu.recept.receptpwa2.validation.annotation.ValidEmail;
+/*import hu.recept.receptpwa2.validation.annotation.PasswordMatches;
+import hu.recept.receptpwa2.validation.annotation.ValidEmail;
 import hu.recept.receptpwa2.validation.annotation.ValidPassword;*/
-import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "users")
-@Data // Getters and Setters.
-@NoArgsConstructor
+@Data
 @AllArgsConstructor
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer user_id;
-
+@NoArgsConstructor
+// @PasswordMatches
+public class RegistrationData {
     @NotBlank(message = "Felhasználónév megadása kötelező!")
     private String username;
 
@@ -30,9 +25,9 @@ public class User {
     @NotBlank(message = "Jelszó megadása kötelező!")
     private String password;
 
-    public User(@Valid RegistrationData data) {
-        this.username = data.getUsername();
-        this.email = data.getEmail();
-        this.password = data.getPassword();
-    }
+    @NotBlank(message = "Jelszó ismételt megadása kötelező!")
+    private String confirmPassword;
+
+    @NotNull
+    private Boolean terms;
 }

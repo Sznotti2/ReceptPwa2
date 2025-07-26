@@ -1,6 +1,8 @@
 package hu.recept.receptpwa2.service;
 
 //import hu.recept.receptpwa2.config.AppConfig;
+import hu.recept.receptpwa2.exception.EmailAlreadyExistsException;
+import hu.recept.receptpwa2.exception.UsernameAlreadyExistsException;
 import hu.recept.receptpwa2.model.User;
 import hu.recept.receptpwa2.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -28,7 +30,12 @@ public class UserService implements UserRepository {
 
     @Override
     @Transactional
-    public <S extends User> S saveAndFlush(S entity) {
+    public <S extends User> S saveAndFlush(S entity) throws UsernameAlreadyExistsException, EmailAlreadyExistsException {
+        if(userRepository.findByUsername(entity.getUsername()) != null) {
+            throw new UsernameAlreadyExistsException("Ez a felhasználónév már foglalt.");
+        } else if(userRepository.findByEmail(entity.getEmail()) != null) {
+            throw new EmailAlreadyExistsException("Ez az email cím már foglalt.");
+        }
         return userRepository.saveAndFlush(entity);
     }
 
