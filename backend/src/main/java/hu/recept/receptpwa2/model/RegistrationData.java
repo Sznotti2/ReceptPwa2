@@ -1,8 +1,8 @@
 package hu.recept.receptpwa2.model;
 
-/*import hu.recept.receptpwa2.validation.annotation.PasswordMatches;
+import hu.recept.receptpwa2.validation.annotation.PasswordMatches;
 import hu.recept.receptpwa2.validation.annotation.ValidEmail;
-import hu.recept.receptpwa2.validation.annotation.ValidPassword;*/
+import hu.recept.receptpwa2.validation.annotation.ValidPassword;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -12,16 +12,16 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-// @PasswordMatches
+@PasswordMatches
 public class RegistrationData {
     @NotBlank(message = "Felhasználónév megadása kötelező!")
     private String username;
 
-    // @ValidEmail
+    @ValidEmail
     @NotBlank(message = "Email cím megadása kötelező!")
     private String email;
 
-    // @ValidPassword
+    @ValidPassword
     @NotBlank(message = "Jelszó megadása kötelező!")
     private String password;
 

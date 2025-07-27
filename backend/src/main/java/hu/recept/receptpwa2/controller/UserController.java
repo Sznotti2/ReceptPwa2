@@ -43,7 +43,7 @@ public class UserController {
     }*/
 
     // When validation failed for an argument, return only the message.
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    /*@ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleValidationExceptions(MethodArgumentNotValidException ex) {
         // Get the default error message from the first validation error.
         String message = ex.getBindingResult()
@@ -53,7 +53,7 @@ public class UserController {
                 .map(FieldError::getDefaultMessage)
                 .orElse("Sikertelen validáció.");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
-    }
+    }*/
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleCustomException(Exception e) {

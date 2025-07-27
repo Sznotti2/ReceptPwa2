@@ -1,7 +1,7 @@
 package hu.recept.receptpwa2.model;
 
-/*import hu.recept.receptpwa2.validation.annotation.ValidEmail;
-import hu.recept.receptpwa2.validation.annotation.ValidPassword;*/
+import hu.recept.receptpwa2.validation.annotation.ValidEmail;
+import hu.recept.receptpwa2.validation.annotation.ValidPassword;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -22,11 +22,11 @@ public class User {
     @NotBlank(message = "Felhasználónév megadása kötelező!")
     private String username;
 
-    // @ValidEmail
+    @ValidEmail
     @NotBlank(message = "Email cím megadása kötelező!")
     private String email;
 
-    // @ValidPassword
+    @ValidPassword
     @NotBlank(message = "Jelszó megadása kötelező!")
     private String password;
 

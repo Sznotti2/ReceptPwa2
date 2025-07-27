@@ -181,12 +181,16 @@ public class UserService implements UserRepository {
     }
 
     @Override
+    @Transactional
     public User findByUsername(String username) {
+        System.out.println("HELLO: " + userRepository.findByUsername(username));
         return userRepository.findByUsername(username);
     }
 
     @Override
+    @Transactional
     public User findByEmail(String email) {
+        System.out.println("HELLO: " + userRepository.findByEmail(email));
         return userRepository.findByEmail(email);
     }
 
