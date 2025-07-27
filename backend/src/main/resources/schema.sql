@@ -12,4 +12,3 @@ CREATE TABLE IF NOT EXISTS `users` (
     UNIQUE (email),
     CONSTRAINT CHK_PasswordLength CHECK (CHAR_LENGTH(password) >= 8)
 );
-

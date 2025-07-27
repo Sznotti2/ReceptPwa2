@@ -11,7 +11,7 @@ You can now view the app on http://localhost:4200/.
 
 ## **Backend setup**
 
-### **Navigate to `backend/receptpwa2/` directory.**
+### **Navigate to `backend/` directory.**
 
 ### **MySQL database**
 
