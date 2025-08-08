@@ -5,8 +5,10 @@ import java.util.Optional;
 
 import hu.recept.receptpwa2.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 // Spring Data JPA creates CRUD implementation at runtime automatically.
+@Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
     User findByUsername(String username);
     User findByEmail(String email);
