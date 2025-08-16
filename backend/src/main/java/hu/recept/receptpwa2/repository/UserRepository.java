@@ -1,13 +1,11 @@
 package hu.recept.receptpwa2.repository;
 
-import java.util.List;
-import java.util.Optional;
-
-import hu.recept.receptpwa2.model.User;
+import hu.recept.receptpwa2.model.UserDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-// Spring Data JPA creates CRUD implementation at runtime automatically.
-public interface UserRepository extends JpaRepository<User, Integer> {
-    User findByUsername(String username);
-    User findByEmail(String email);
+@Repository
+public interface UserRepository extends JpaRepository<UserDTO, Integer> {
+    UserDTO findByUsername(String username);
+    UserDTO findByEmail(String email);
 }
