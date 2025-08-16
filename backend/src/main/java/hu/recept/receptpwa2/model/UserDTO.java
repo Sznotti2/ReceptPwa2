@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Data // Getters and Setters.
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class UserDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer user_id;
@@ -34,7 +34,7 @@ public class User {
     @ValidPassword(groups = AdvancedValidation.class)
     private String password;
 
-    public User(@Valid RegistrationData data) {
+    public UserDTO(@Valid RegistrationData data) {
         this.username = data.getUsername();
         this.email = data.getEmail();
         this.password = data.getPassword();
