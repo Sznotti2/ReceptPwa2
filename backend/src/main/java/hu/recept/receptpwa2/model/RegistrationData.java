@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@PasswordMatches(message = "A jelszavak nem egyeznek.", groups = AdvancedValidation.class)
+@PasswordMatches(message = "A jelszavak nem egyeznek meg.", groups = AdvancedValidation.class)
 public class RegistrationData {
     @NotBlank(message = "Felhasználónév megadása kötelező!", groups = BasicValidation.class)
     private String username;

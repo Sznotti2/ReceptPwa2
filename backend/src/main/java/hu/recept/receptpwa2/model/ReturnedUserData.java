@@ -9,10 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReturnedUserData {
+    private Integer userId;
     private String username;
     private String email;
 
     public ReturnedUserData(@Valid UserDTO data) {
+        this.userId = data.getUserId();
         this.username = data.getUsername();
         this.email = data.getEmail();
     }
