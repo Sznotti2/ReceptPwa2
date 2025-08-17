@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PasswordResetData {
+public class ForgotPasswordData {
     @NotBlank(message = "Email cím megadása kötelező!", groups = BasicValidation.class)
     @ValidEmail(groups = AdvancedValidation.class)
     private String email;

@@ -11,6 +11,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "users")
 @Data // Getters and Setters.
@@ -19,7 +21,7 @@ import lombok.NoArgsConstructor;
 public class UserDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer user_id;
+    private Integer userId;
 
     @NotBlank(message = "Felhasználónév megadása kötelező!", groups = BasicValidation.class)
     @Column(unique = true, nullable = false)
@@ -33,6 +35,9 @@ public class UserDTO {
     @NotBlank(message = "Jelszó megadása kötelező!", groups = BasicValidation.class)
     @ValidPassword(groups = AdvancedValidation.class)
     private String password;
+
+    private String resetPasswordToken;
+    private LocalDateTime resetTokenExpiry;
 
     public UserDTO(@Valid RegistrationData data) {
         this.username = data.getUsername();

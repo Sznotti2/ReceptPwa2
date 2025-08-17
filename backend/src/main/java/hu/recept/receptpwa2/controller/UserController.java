@@ -1,28 +1,19 @@
 package hu.recept.receptpwa2.controller;
 
-import hu.recept.receptpwa2.exception.EmailAlreadyExistsException;
-import hu.recept.receptpwa2.exception.InvalidLoginException;
-import hu.recept.receptpwa2.exception.TermsNotAcceptedException;
-import hu.recept.receptpwa2.exception.UsernameAlreadyExistsException;
-import hu.recept.receptpwa2.model.LoginData;
-import hu.recept.receptpwa2.model.RegistrationData;
-import hu.recept.receptpwa2.model.ReturnedUserData;
-import hu.recept.receptpwa2.model.UserDTO;
+import hu.recept.receptpwa2.exception.*;
+import hu.recept.receptpwa2.model.*;
+import hu.recept.receptpwa2.repository.SessionService;
 import hu.recept.receptpwa2.service.UserService;
-import hu.recept.receptpwa2.validation.EmailValidator;
 import hu.recept.receptpwa2.validation.groups.ValidationSequence;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -32,111 +23,100 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private SessionService sessionService;
+
     @PostMapping("/register")
-    public ResponseEntity<ReturnedUserData> register(@Validated(ValidationSequence.class) @RequestBody RegistrationData data) throws UsernameAlreadyExistsException, EmailAlreadyExistsException, TermsNotAcceptedException  {
+    public ResponseEntity<ReturnedUserData> register(@Validated(ValidationSequence.class) @RequestBody RegistrationData data) throws TermsNotAcceptedException  {
         if(!data.getTerms()){
-            throw new TermsNotAcceptedException("Az adatkezelési tájékoztatóban foglaltakat el kell fogadni!");
+            throw new TermsNotAcceptedException();
         }
 
-        // data is validated before
-        UserDTO userDTO = userService.addUser(new UserDTO(data));
-        ReturnedUserData res = new ReturnedUserData(userDTO);
+        UserDTO user = userService.addUser(data);
+
+        ReturnedUserData res = new ReturnedUserData(user);
         return ResponseEntity.ok(res);
     }
 
     @PostMapping("/login")
     public ResponseEntity<ReturnedUserData> login(@Validated(ValidationSequence.class) @RequestBody LoginData data, HttpServletResponse response) throws InvalidLoginException{
-        UserDTO userDTO;
+        UserDTO user = userService.loginUser(data);
 
-        EmailValidator emailValidator = new EmailValidator();
-        boolean isEmail = emailValidator.isValid(data.getName(), null);
-        if(isEmail){
-            userDTO = userService.findByEmail(data.getName());
-        } else {
-            userDTO = userService.findByUsername(data.getName());
-        }
+        if(user != null){
+            String token = UUID.randomUUID().toString();
+            sessionService.createSession(token, user.getUserId());
 
-        if(userDTO != null && data.getPassword().equals(userDTO.getPassword())){
-            String sessionToken = UUID.randomUUID().toString();
-            Cookie cookie = new Cookie("session-token", sessionToken);
+            Cookie cookie = new Cookie("session-token", token);
             cookie.setHttpOnly(true);
             //cookie.setSecure(true); //HTTPS only
             cookie.setPath("/");
             cookie.setMaxAge(3600 * 24 * 30);
-
             response.addCookie(cookie);
 
-            ReturnedUserData res = new ReturnedUserData(userDTO);
+            ReturnedUserData res = new ReturnedUserData(user);
             return ResponseEntity.ok(res);
         }
 
-        throw new InvalidLoginException("Helytelen felhasználónév vagy jelszó.");
+        throw new InvalidLoginException();
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Map<String, String>> logout(HttpServletResponse response){
-        Cookie cookie = new Cookie("session-token", "");
-        cookie.setHttpOnly(true);
-        //cookie.setSecure(true); //HTTPS only
-        cookie.setPath("/");
-        cookie.setMaxAge(0);
+    public ResponseEntity<Map<String, String>> logout(@CookieValue("session-token") String sessionToken, HttpServletResponse response) throws InvalidSessionTokenException {
+        if(sessionService.isValidSession(sessionToken)){
+            sessionService.invalidateSession(sessionToken);
 
-        response.addCookie(cookie);
+            Cookie cookie = new Cookie("session-token", "");
+            cookie.setHttpOnly(true);
+            //cookie.setSecure(true); //HTTPS only
+            cookie.setPath("/");
+            cookie.setMaxAge(0);
+            response.addCookie(cookie);
+
+            Map<String, String> res = new HashMap<>();
+            res.put("message", "Sikeres kijelentkezés.");
+            return ResponseEntity.ok(res);
+        }
+        throw new InvalidSessionTokenException();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Map<String, String>> deleteUser(@PathVariable Integer id, @Validated(ValidationSequence.class) @RequestBody DeleteUserData data, HttpServletResponse response) throws UserNotDeletedException {
+        if (userService.deleteUser(id, data)) {
+            List<String> tokens = sessionService.getTokensByUserId(id);
+            tokens.forEach(token -> sessionService.invalidateSession(token));
+
+            Cookie cookie = new Cookie("session-token", "");
+            cookie.setHttpOnly(true);
+            //cookie.setSecure(true); //HTTPS only
+            cookie.setPath("/");
+            cookie.setMaxAge(0);
+            response.addCookie(cookie);
+
+            Map<String, String> res = new HashMap<>();
+            res.put("message", "Felhasználó törlése sikeres.");
+            return ResponseEntity.ok(res);
+        }
+        throw new UserNotDeletedException();
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<Map<String, String>> forgotPassword(@Validated(ValidationSequence.class) @RequestBody ForgotPasswordData data) {
+        userService.createPasswordResetToken(data);
 
         Map<String, String> res = new HashMap<>();
-        res.put("message", "Sikeres kijelentkezés.");
+        res.put("message", "A tokent elküldtük a megadott email címre.");
         return ResponseEntity.ok(res);
     }
 
-    // When validation failed for an argument, return only the message.
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        String message = ex.getBindingResult()
-                .getFieldErrors().stream()
-                .findFirst()
-                .map(FieldError::getDefaultMessage)
-                .or(() -> ex.getBindingResult().getGlobalErrors().stream()
-                        .findFirst()
-                        .map(ObjectError::getDefaultMessage))
-                .orElse("Sikertelen validáció.");
-
-        Map<String, String> res = new HashMap<>();
-        res.put("error", message);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+    @PostMapping("/reset-password")
+    public ResponseEntity<Map<String, String>> resetPassword(@Validated(ValidationSequence.class) @RequestBody ResetPasswordData data) throws InvalidTokenException {
+        boolean result = userService.resetPassword(data);
+        if (result) {
+            Map<String, String> res = new HashMap<>();
+            res.put("message", "A jelszót megváltoztattuk.");
+            return ResponseEntity.ok(res);
+        } else {
+            throw new InvalidTokenException();
+        }
     }
-
-    @ExceptionHandler(EmailAlreadyExistsException.class)
-    public ResponseEntity<Map<String, String>> handleEmailAlreadyExistsException(EmailAlreadyExistsException ex) {
-        Map<String, String> res = new HashMap<>();
-        res.put("error", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
-    }
-
-    @ExceptionHandler(UsernameAlreadyExistsException.class)
-    public ResponseEntity<Map<String, String>> handleUsernameAlreadyExistsException(UsernameAlreadyExistsException ex) {
-        Map<String, String> res = new HashMap<>();
-        res.put("error", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
-    }
-
-    @ExceptionHandler(TermsNotAcceptedException.class)
-    public ResponseEntity<Map<String, String>> handleTermsNotAcceptedException(TermsNotAcceptedException ex) {
-        Map<String, String> res = new HashMap<>();
-        res.put("error", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
-    }
-
-    @ExceptionHandler(InvalidLoginException.class)
-    public ResponseEntity<Map<String, String>> handleInvalidLoginException(InvalidLoginException ex) {
-        Map<String, String> res = new HashMap<>();
-        res.put("error", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
-    }
-
-
-   /*@ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleCustomException(Exception e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-    }*/
-
 }

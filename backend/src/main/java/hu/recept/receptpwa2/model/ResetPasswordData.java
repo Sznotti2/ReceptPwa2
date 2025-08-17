@@ -11,8 +11,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ForgotPasswordData {
-    @NotBlank(message = "Email cím megadása kötelező!", groups = BasicValidation.class)
-    @ValidEmail(groups = AdvancedValidation.class)
-    private String email;
+public class ResetPasswordData {
+    @NotBlank(message = "Emailben kapott token megadása kötelező!", groups = BasicValidation.class)
+    private String token;
+
+    @NotBlank(message = "Új jelszó megadása kötelező!", groups = BasicValidation.class)
+    private String newPassword;
 }
